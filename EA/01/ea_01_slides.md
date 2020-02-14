@@ -417,8 +417,17 @@ DEMO
  * Statikus vs. dinamikus kiszolgálás
  * Javascript: AJAX
  * SPA
- * Markdown
-
+ 
 ---
-# Hogyan tovább?
-
+# Ellenőrző kérdések
+* Mit nevezünk kliens-szerver architektúrának?
+* Mire való a HTTP protokoll? Mi a HTTP kérés, illetve válaszok felépítése?
+    * Milyen HTTP igék vannak? 
+    * Mit nevezünk sütinek?
+* Mit nevezünk Backend as a Service szolgáltatásnak?
+* Mire való a HTML nyelv? 
+* Mire való a CSS nyelv?
+* Mire való a JavaScript nyelv? 
+* Mit jelent az AJAX? 
+* Hogyan működik egy Single Page Application?
+* Mitől speciális a HTML + JavaScript alapú fejlesztés? Hasonlítsa össze egy hagyományos desktop alapú fejlesztési környezettel!

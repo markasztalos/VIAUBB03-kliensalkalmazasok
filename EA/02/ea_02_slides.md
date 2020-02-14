@@ -117,6 +117,10 @@ Block és inline típusú elemek
  * Mi határozza meg, hogy egy elem milyen?
     * Szabvány
     * Felülírható (ld. `display` css tulajdonság később)
+ * A box modellen használt méretek:
+    * küldő margó: `margin`
+    * keret: `border`
+    * belső margó: `padding`
 
 ---
 
@@ -256,6 +260,9 @@ DEMO ([`css.html`](demo/css.html))
 * Színek: `color`, `background-color`
     * színek megadása névvel (pl. `blue`), vagy rgb értékkel (`#112233`, vagy `rgb(11, 22, 33)`)
 
+----
+CSS tulajdonságok alkalmazási sorrendje
+
 ---
 ### Elrendezések (layoutok)
 * Táblázatokat nem használunk elrendezéshez, oldal struktúrájának meghatározására.
@@ -312,7 +319,27 @@ Az elrendezésekbe és a reszponzív tervezési elvekbe nem mentünk bele részl
 * [RevealJS](https://revealjs.com/#/), [RemarkJS](https://remarkjs.com/#1)
  
 
+---
+### Ellenőrző kérdések
+* Mire való a HTML nyelv?
+    * Milyen kötelező elemei vannak egy HTML dokumentumnak? 
+    * Mire való a `DOCTYPE`?
+    * Mire valók a `html`, `head`, `body` elemek?
+    * Ismertesse a következő elemeket és legfontosabb attribútumaikat: `a`, `img`, `p`
+    * Hogyan kell táblázatot definiálni HTML-ben? 
+    * Mi a különbség s div és span elemek között?
 
+----
+* Mire való a CSS nyelv? 
+    * Mi az a CSS szelektor?
+    * Milyen CSS szelektorokat ismer?
+    * Mi rendezünk reszponzív designnak?
+* Ismertesse a box modellt!
+* Mire szolgálnak az űrlapok?
+    * Hogyan kell űrlapokat létrehozni? 
+    * Milyen adatbeviteli mezők vannak egy űrlapban? 
+    * Ismertesse az űrlapok beviteli mezőiben szereplő `name` attribútum jelentését!
+    * Mi lesz egy űrlap alapján készített HTTP kérés tartalma?
 
 
 
