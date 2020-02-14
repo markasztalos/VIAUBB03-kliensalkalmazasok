@@ -1,0 +1,19 @@
+<html>
+    <head></head>
+    <body>
+        <p>
+            <button onClick="addNewItem()">Kattints ide</button>
+        </p>
+        <div id="container">
+
+        </div>
+        <script type="text/javascript">
+            function addNewItem() {
+                var container = document.getElementById("container");
+                var newParagraph = document.createElement("p");
+                newParagraph.textContent = "Rákattintottál a gombra";
+                container.append(newParagraph);
+            }
+        </script>
+    </body>
+</html>

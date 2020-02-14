@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <p>
+            <button onclick="showShoppingList()">Bevásárló lista letöltése</button>
+        </p>
+        <div id="container">
+        </div>
+    </head>
+    <body>
+        <script>
+            function showShoppingList() {
+                fetch('shopping-list.json')
+                    .then(response => response.json())
+                    .then(list => {
+                        let newContent = "";
+                        for (let item of list) {
+                            newContent += "<p>"+item+"</p>";
+                        }
+                        var container = document.getElementById("container");
+                        container.innerHTML = newContent;
+                    });
+            }
+        </script>
+    </body>
+</html>

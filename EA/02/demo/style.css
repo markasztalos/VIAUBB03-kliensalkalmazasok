@@ -1,0 +1,29 @@
+/* Nincsen sorkomment: // */
+
+/* element CSS szelektor */
+body {
+    background-color: lightgray
+}
+
+/* class szelektor*/
+.red-text {
+    color: red;
+}
+
+.yellow-background {
+    background-color: yellow;
+}
+
+/* attribútum szelektor*/
+[data-bluebg] {
+    background-color: blue;
+}
+
+/* kombinált szelektorok */
+.black, .black-container .black-content {
+    background-color: black;
+    color: white;
+}
+
+
+
