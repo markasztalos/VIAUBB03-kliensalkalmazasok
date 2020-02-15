@@ -22,8 +22,7 @@ Kliensalkalmazások
 ----
 ### Az óra célja:
 * A web alapvető működésének a megértése:
-    * Szereplők 
-    * Eszközök 
+    * Szereplők
     * Kommunikáció forgatókönyve és szabályrendszere
 * Mi kell ahhoz, hogy ezt programozni tudjuk?
     * Programozási nyelvek és környezetek
@@ -32,15 +31,17 @@ Kliensalkalmazások
 
 ### Hogyan működik egy egyszerű webszerver?
 
-DEMO:
- * Indítsunk egy `http-server`-t (`npm`) ebben a könyvtárban!
+DEMO: egy kép betöltése a böngészőben
+ * Indítsunk egy el egy egyszer webszervert ebben a könyvtárban!
+    * (Pl. `http-server`(`npm`))
  * Nézzük meg, hogy kilistázza a böngésző a könyvtár fájljait
  * Nyissuk meg az  `demo/image.png` URL-t a böngészőben!
 
 ----
 A böngésző működése:
 
- * A felhasználó beír egy URL-t a böngészőbe, ennek részei: IP cím, port szám, erőforrás azonosító: `www.aut.bme.hu` vs `http://www.aut.bme.hu:80/`
+ * A felhasználó beír egy URL-t a böngészőbe, ennek részei: IP cím, port szám, erőforrás azonosító: 
+    * A böngésző a rövidebb formát írja ki: `www.aut.bme.hu` vs `http://www.aut.bme.hu:80/`
     * Az URL alapján, a böngésző generál egy kérést, amit elküld a webszervernek
     * A webszerver hálózati címe az URL-ből jön
     * A webszerver portszáma az URL-ből jön
@@ -93,33 +94,42 @@ PNG
 IHDR            ^   PLTELiqJ? 
 ```
 * Első sor (ld. számítógépes hálózatokból)
-* opcionális fejléc sorok
+* Opcionális fejléc sorok
 * Tartalom
+
+----
+#### Miért van szükség a HTTP protokollra?
+ * A böngésző a webszervernek és webszerver a böngészőnek bájtsorozatokat küld
+ * Meg kell egyezniük abban, hogy a bájtosorozatot hogyan kell értelmezni? 
+    * &rarr; szabványosított protokoll
+ * A böngésző az erőforrásazonosítót kell elküldje és további paramétereket
+ * A webszerver a válaszban a kért erőforrás adatait és további paramétereket küldd
+ * Ezt teszi lehetővé a HTTP, ami egy egyszer szöveg alapú adatátviteli protokoll
 
 ---
 A böngésző és a webszerver együtt egy elosztott alkalmazást alkotnak, amelyek egymással kommunikálnak. 
 ### Kliens-Szerver archietktúra
-* Szerver figyel egy jól ismert címen
-* A kliens csatlakozik, küld egy kérést, amire a szerver válaszol
-
-A web esetében:
-* Webszerver
-* User agent (itt most ez a böngésző) - aki a HTTP kérést küldi. 
-    * Tudnánk sajátot is írni egyszerű socket kezeléssel
-
+* Egy elosztott hálózati kommunikációs séma:
+    * Szerver figyel egy jól ismert címen
+    * A kliens csatlakozik, küld egy kérést, amire a szerver válaszol
+* A web esetében:
+    * Webszerver
+    * User agent (itt most ez a böngésző) - aki a HTTP kérést küldi. 
+        * Nem feltétlenül böngésző, tudnánk sajátot is írni egyszerű socket kezeléssel
 
 ---
 
 # Webalkalmazások
 
 ---
-# Weboldalak
+## Weboldalak
 DEMO Kérjünk le egy egyszerű weboldalt: [`index.html`](demo/index.html)
 
 A böngésző megjelenít egy tartalmat, nem csak kiírja a szöveget
- * A tartalom egy weboldal leírása
+ * A tartalom egy HTML dokumentum: egy weboldal
  * *HyperText Transfer Language*: XML (szerű) nyelv, 
     * az egyes tag-eknek megfelelő jelentésük van. 
+
 ----
 HTML fájl tartalma
  * Statikus tartalom
@@ -149,7 +159,7 @@ HTML fájl tartalma
 ### Mit lehet még csinálni JS-ben? 
  * Kommunikálni a szerverrel.
     * DEMO [dyn2.html](demo/dyn2.html)
-    * A JavaScript kódból indítunk egy HTML kérést és feldolgozzuk az eredményét
+    * A JavaScript kódból indítunk egy HTTP kérést és feldolgozzuk az eredményét
     * Miért jó?
         * Nem az egész oldalt visszük át a hálózaton (&rarr; teljesítmény növekedés)
         * Nem az egész oldalt töltjük újra (&rarr; nincs villódzás, jobb felhasználói élmény)
@@ -164,13 +174,25 @@ Ezt a kérést AJAX-nak nevezzük:
     * Ez régen tipikusan XML volt, ma inkább JSON. (Van olyan, hogy a szerver HTML részleteket ad vissza.)
 
 ----
+HTTP és AJAX:
+ * Az AJAX hívás eredményét a JavaScript dolgozza fel. 
+ * A JavaScript módosítja a HTML-t
+ * A webszerver tipikusan nem egy teljes HTML dokumentumot ad vissza, hanem:
+    * Egyszerű adatot (pl. XML)
+    * Esetleg részleges HTML tartalmat, amivel a böngészőt frissíteni kell
+ * Tehát a HTTP-vel nem csak teljes fájlokat, hanem tetszőleges adatot lehet küldeni, fogadni.
+
+----
 ### Statikus vs. dinamikus kiszolgálás:
  * A kiszolgálás **statikus**: 
     * Adottak az erőforrások (fájlok)
     * Bármikor kérjük le az oldalt, a webszerver mindig ugyanazt adja vissza
  * A kiszolgálás **dinamikus**:
-    * A szerveren lefut egy program, ami előállítja a visszaküldött tartalmat. A program futása nem mindig ugyanazt adja vissza.
-    * &rarr; Személyre szabott tartalom: attól függ, hogy mit adunk vissza, hogy ki kéri le. Péládul ha beléptünk a gmailbe, majd beírjuk, hogy `gmail.com`, akkor mindenkinek a saját leveleit adja vissza a Google. 
+    * A szerveren lefut egy program, ami előállítja a visszaküldött tartalmat. 
+        * A program futása nem mindig ugyanazt adja vissza.
+    * &rarr; Személyre szabott tartalom: attól függ, hogy mit adunk vissza, hogy ki kéri le (milyen paraméterek vannak a HTTP kérésben). 
+
+Note: Péládul ha beléptünk a gmailbe, majd beírjuk, hogy `gmail.com`, akkor mindenkinek a saját leveleit adja vissza a Google. 
 
 ---
 ### Single Page Application:
@@ -180,16 +202,17 @@ Ezt a kérést AJAX-nak nevezzük:
 ----
  * Mi történik az URL-lel? 
     * Az URL segít, hogy egy adott erőfrorrásra tudjunk hivatkozni.
-    * A böngészőben beírt URL általában a lekért erőforrást (pl. `gmail.com` jelzi)
-    * SPA-k esetén a JS kódból az URL-t is át szoktuk írni (a postfixeket, az eleje - pl. `gmail.com` - mindig marad). De valójában nem történik átirányítás. 
-    * Miért jó ez? Tegyük fel, hogy szűrni szeretnénk a leveleket azokra, amiknek feladója XY? `gmail.com?filter=XY` beilleszthető egy új ablakba és folytatható a munkamenet. 
+    * A böngészőben beírt URL általában a lekért erőforrást (pl. `gmail.com`) jelzi
+    * SPA-k esetén a JavaScript kódból az URL-t is át szoktuk írni (a postfixeket, az eleje - pl. `gmail.com` - mindig marad). De valójában nem történik átirányítás. 
+    * Miért jó ez? 
+        * Tegyük fel, hogy szűrni szeretnénk a leveleket azokra, amiknek feladója XY! `gmail.com?filter=XY` beilleszthető egy új ablakba és folytatható a munkamenet. 
 
 ----
  * Milyen feltételei vannak annak, hogy igazán komoly SPA-kat tudjunk írni böngészőkben?
-    * HTML UI leíró nyelv kifejező ereje
-    * Hatékony böngészők
-    * Jól használható, fejlett JavaScript nyelv
-    * &rarr; Az utóbbi években mind nagyon sokat fejlődött, tényleg lehet komoly alkalmazásokat fejleszteni
+    * HTML UI leíró nyelv kifejező ereje legyen elég jó
+    * Hatékony böngészők (mert ezek renderelik a HTML-t és futtatják a JavaScriptet)
+    * Jól használható, fejlett JavaScript nyelv (legyen alkalamas komplex alkalmazások fejlesztésére)
+    * &rarr; Az utóbbi években mind nagyon sokat fejlődött
 
 ---
 ### A web, mint speciális fejlesztési környezet
@@ -204,7 +227,8 @@ Mik a specialitások más UI programozási környezetekhez képest (pl. egy desk
 
 ----
  * Programozás csak JavaScript-ben, aminek vannak specialitásai
- * Különböző böngészőmotorok (Chrome, Firefox, Internet Explorer, Edge (most már Chromium alapon), Safari, mobil böngészők): a HTML, CSS, JS nyelvek fejlődését különböző módon követik, vannak kisebb eltérések (ma már nagyon jó a helyzet)
+ * Különböző böngészőmotorok (Chrome, Firefox, Internet Explorer, Edge (most már Chromium alapon), Safari, mobil böngészők): a HTML, CSS, JS nyelvek fejlődését különböző módon követik, 
+    * vannak kisebb eltérések, de ma már nagyon jó a helyzet
 
 ----
  * Korlátozások a böngészőben egy asztali környezethez képest:
@@ -215,18 +239,27 @@ Mik a specialitások más UI programozási környezetekhez képest (pl. egy desk
 ----
  * Adatkezelés
     * Nincs fájlrendszer
-    * Storage API - kis méretű kulcs érték párok tárolása a böngészőben
+    * Storage API: kis méretű kulcs érték párok tárolása a böngészőben
+        * session storage: csak a munkamenet idejére (amíg a böngészőt nem zárjuk be) marad meg a tartalma
+        * local storage: a böngésző bezárása után is megmarad a tartalma
     * (web SQL, IndexedDB...)
     * Kommunikácó különböző szolgáltatásokkal a hálózaton keresztül
 
 ----
-Kitekintés: böngésző független multiplatform fejlesztés
- * A JavaScript futtatásához kell egy JS motor
- * Van böngésző független JS motor (NodeJS)
-    * JS nyelven lehet bármilyen programot írni
+### Kitekintés 
+#### böngésző független multiplatform fejlesztés
+A JavaScript futtatásához kell egy JS motor
+ * Van böngésző független JS motor 
+    * JS nyelven lehet bármilyen konzolos programot írni (pl. webszervert)
     * Nem érthető el benne a `document`, tehát nincs HTML DOM kezelés
     * De cserében hozzáférünk az OS-hez (van pl. fájl API)
- * Lehetséges JS + HTML alkalmazásokat nem weben, hanem egy desktop környezetben futtatni (pl. Elektron). Tehát írhatunk egy komplett desktop alkalamzást a JS, HTML technológiák felhasználásával. Itt már elérjük az OS-t. 
+    * [NodeJS](https://nodejs.org/en/)
+
+----
+ * Lehetséges JS + HTML alkalmazásokat nem weben, hanem egy desktop környezetben futtatni
+    * Tehát írhatunk egy komplett desktop alkalamzást a JS, HTML technológiák felhasználásával. 
+    * Itt már elérjük az OS-t. 
+    * pl. [ElectronJS](https://www.electronjs.org/)
 
 ---
 #  HTTP (Ismétlés)
@@ -234,24 +267,41 @@ HyperText Transfer Protocol
 
 ---
 ### HTTP
- * A HTTP az alapértelmezett protokoll
+ * A HTTP az alapértelmezett protokoll a weben a böngésző és a webszerver közötti kommunikációra
  * Megcímzünk egy erőforrást, amit a szerver visszaad
- * Mi is az erőforrás? Nem feltétlenül egy HTML oldal. hanem valamilyen adat. 
- * Milyen HTTP igék vannak? = Milyen műveleteket lehet végrehajtani az adatokon?
-    * GET (erőforrás lekérése)
-    * POST (új erőforrás feltöltése - adatot is küldünk)
-    * PUT (erőforrás módosítása)
-    * DELETE (erőforrás törlése)
-    * ...
+ * Mi is az erőforrás? 
+    * A visszaküldött tartalom bármilyen bájtsorozat lehet
+    * Lehetnek fájlok, amiket megcímeztünk
+    * De az erőforrás lehet valamilyen adat is
 
 ---
+
 ### Példa 
 
 Tegyük fel, hogy könyveket akarunk kezelni egy webalkalmazásban. 
 * Egy listában lekérjük a könyveket, 
 * kiválaszthatunk egyet és azt törölhetjük, vagy módosíthatjuk,
 * új könyvet tölthetünk fel. 
-* Szertnénk ehhez egy elosztott programozási API-t 
+* Szertnénk ehhez egy **elosztott API**-t 
+
+----
+Mit jelent az elosztott API:
+ * API: Application Programming Interface
+    * Egy program meg tud hívni távoli gépeken metódusokat
+    * A metódus végrehajt egy műveletet
+    * A metódusnak van visszatérési értéke
+HTTP végpontok, mint elosztott API:
+ * Definiálunk egy URL-t, amire, ha HTTP kérést küldünk, végrehajtunk egy műveletet
+ * Visszaadunk egy erdményt
+ * Milyen műveleteket akarhat végrehajtani a kliens?
+
+----
+ * Milyen HTTP igék vannak? = Milyen műveleteket lehet végrehajtani az adatokon?
+    * GET (erőforrás lekérése)
+    * POST (új erőforrás feltöltése - adatot is küldünk)
+    * PUT (erőforrás módosítása)
+    * DELETE (erőforrás törlése)
+    * ...
 
 Ezek az ún. **CRUD** (create, read, updated, delete) műveletek. 
 
@@ -419,15 +469,17 @@ DEMO
  * SPA
  
 ---
-# Ellenőrző kérdések
+### Ellenőrző kérdések
 * Mit nevezünk kliens-szerver architektúrának?
 * Mire való a HTTP protokoll? Mi a HTTP kérés, illetve válaszok felépítése?
     * Milyen HTTP igék vannak? 
     * Mit nevezünk sütinek?
-* Mit nevezünk Backend as a Service szolgáltatásnak?
 * Mire való a HTML nyelv? 
 * Mire való a CSS nyelv?
 * Mire való a JavaScript nyelv? 
-* Mit jelent az AJAX? 
-* Hogyan működik egy Single Page Application?
+    * Mit jelent az AJAX? 
+    * Hogyan működik egy Single Page Application?
+
+----
+* Mit nevezünk Backend as a Service szolgáltatásnak?
 * Mitől speciális a HTML + JavaScript alapú fejlesztés? Hasonlítsa össze egy hagyományos desktop alapú fejlesztési környezettel!
