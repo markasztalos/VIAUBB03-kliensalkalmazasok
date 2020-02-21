@@ -1,0 +1,31 @@
+<html>
+    <head></head>
+    <body>
+        <div>
+            <p>Bevásárló lista</p>
+            <ul id="list"></ul>
+        </div>
+        <script>
+            let colors = ["red", "green", "blue"];
+            let shoppingList = ["kenyér", "tej", "tojás", "vaj", "fagyi", "narancslé"];
+            let ul = document.getElementById("list");
+            let i = 0;
+            let timerId;
+            timerid = setInterval(() => {
+                if (i < shoppingList.length) {
+                    let li = document.createElement("li");
+                    li.innerHTML = shoppingList[i];
+                    li.style.color = colors[i % 3]
+                    ul.append(li);
+                    i++;
+                } else {
+                    clearInterval(timerId);
+                    setTimeout(() => {
+                        ul.remove();
+                    }, 5000)
+                }
+            }, 1000);
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,51 @@
+<html>
+<head>
+</head>
+<body>
+    <style>
+        table {
+            
+            margin-left:auto;
+            margin-right: auto;
+            margin-top:5em;
+        }
+        td {
+            padding:3em;
+            border: 1px solid black;
+            background-color: lightgray;
+            font-size:larger;
+        }
+    </style>
+    <script>
+        function colorize(eventTarget) {
+            eventTarget.style.backgroundColor = 
+                eventTarget.style.backgroundColor === "green" ? "lightgray" : "green";
+        }
+        function alwaysGrayClicked(event) {
+            event.stopPropagation();
+            alert("Ennek a cellának nem lehet megváltoztatni a színét!");
+        }
+    </script>
+    <p>
+        Kattints a cellákra, hogy megválozzon a színük!
+    </p>
+    <table onclick="colorize(event.target)">
+        <tr>
+            <td> 1. cella </td>
+            <td> 2. cella </td>
+            <td> 3. cella </td>
+        </tr>
+        <tr>
+            <td> 4. cella </td>
+            <td onclick="alwaysGrayClicked(event)"> szürke </td>
+            <td> 6. cella </td>
+        </tr>
+        <tr>
+            <td> 7. cella </td>
+            <td> 8. cella </td>
+            <td> 9. cella </td>
+        </tr>
+    </table>
+</body>
+
+</html>

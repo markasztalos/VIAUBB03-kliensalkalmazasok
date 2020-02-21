@@ -2,5 +2,11 @@
 	"transition" : "slide",
 	"theme": "beige",
 	"minScale": 0.2,
-	"maxScale": 1.5
+	"maxScale": 1.5,
+	"separatorNotes": "^Jegyzet:",
+    "separator-notes": "^Jegyzet:",
+    "notesSeparator": "^Jegyzet:",
+	"notes-separator": "^Jegyzet:",
+	"notes": "^Jegyzet:",
+	"note": "^Jegyzet:"
 }

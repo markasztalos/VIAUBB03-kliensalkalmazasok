@@ -21,8 +21,8 @@ HTML, CSS, Bootstrap
 ### A web alapvető működése
  * Adott egy böngésző
  * A felhasználó beír egy URL-t
- * A böngésző kérést küldd egy webszervernek (a cím az URL-ből jön)
- * A webszerver visszaküldd egy HTML tartalmat, amit a böngésző megjelenít
+ * A böngésző kérést küld egy webszervernek (a cím az URL-ből jön)
+ * A webszerver visszaküld egy HTML tartalmat, amit a böngésző megjelenít
     * Amennyiben a HTML fájlban vannak további fájlok hivatkozva, azokat a háttérben letölti a böngésző (pl. képek, stíluslapok, JavaScript fájlok)
 
 ----
