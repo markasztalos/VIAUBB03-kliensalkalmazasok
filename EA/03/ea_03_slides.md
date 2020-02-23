@@ -67,11 +67,11 @@ console.log("hello JS! (file)");
 ----
 
 Mi tudunk csinálni JS-ben?
- * Módosítani a HTML-t, amit a böngésző megjelenít
- * Felhasználói eseményeket kezelni (pl. egérkattintás, billentyűlenyomás)
- * AJAX kéréseket küldeni
- * Hozzáférni sütikhez
- * Hozzáférni a *localStorage*hoz és a *sessionStorage*hoz
+ 1. Módosítani a HTML-t, amit a böngésző megjelenít
+ 1. Felhasználói eseményeket kezelni (pl. egérkattintás, billentyűlenyomás)
+ 1. AJAX kéréseket küldeni
+ 1. Hozzáférni sütikhez
+ 1. Hozzáférni a *localStorage*hoz és a *sessionStorage*hoz
 
 
 Jegyzet:
@@ -93,7 +93,7 @@ console.log('Hello World!');
 
 ### Végrehajtása
 A JS egy szkriptnyelv:
-* A JS motor sorról sorra olvassa be és hatja végre az utasításokat
+* A JS motor sorról sorra olvassa be és hajtja végre az utasításokat
 * Hiba esetén a végrehajtás megáll és a további utasítások nem hajtódnak végre
 * Nincs előzetes fordítás (szintaktikai és szemantikai ellenőrzés)
 
@@ -192,7 +192,7 @@ Egyszerű (*primitív*) adattípusok
 * `number`: minden szám, pl. `5`, `6.23`
     * speciális értékek: `infinity`, `NaN` (*not a number*)
 * `string`: 'szöveg', vagy "szöveg"
-    * Két \` (*backtick*) között többsoro string interpolation
+    * Két \` (*backtick*) között: *string interpolation*
 
 ```js
 let a = 'alma';
@@ -207,12 +207,15 @@ szöveg`;
 Jegyzet:
 Egyszerű (*primitív*) adattípusok:
 * `number`: minden szám (egész és tört), pl `5`, `6.23`. Vannak speciális értékek is a típuson belül: `infinity` (végtelen), `NaN` (not a number), amely például nem definiált matematika műveletek eredményeképpen állhat elő. 
-* `string`: szimpla, vagy dupla aposztrófok közé, vagy \` jelek írhatók. Az utóbbi esetben a stringen belül `${kifejezés}` kifejezések kiértékelődnek és behelyettesítődnek a stringbe, pl.:
-  ```js
-  let a = 'alma';
-  let k = "körte";
-  let x = `${a}, ${k}`; //alma, körte
-  ```
+* `string`: szimpla, vagy dupla aposztrófok közé, vagy \` jelek írhatók.  Az utóbbi esetben (backtick használata) a string lehet többsoros is és a stringen belül `${kifejezés}` kifejezések kiértékelődnek és behelyettesítődnek a stringbe, pl.:
+```js
+let a = 'alma';
+let k = "körte";
+let x = `${a}, ${k}`; //alma, körte
+```
+
+
+
 ----
 * `boolean` típus: `true` / `false`.
 
@@ -311,6 +314,8 @@ Operátorok:
 ```js
 console.log("2" == 2); //true
 console.log("2" === 2); //false
+console.log(false === 0); //true
+console.log(false == 0); //true
 ```
 
 Jegyzet:
@@ -329,10 +334,8 @@ function add(a, b) {
 * `function` kulcsszó
 * paraméterek (nincs típusdefiníció)
 * Nincs visszatérési típus
-  * Különböző ágagok más-más típussal térhet vissza
+  * Különböző ágagon más-más típussal térhet vissza
 * Nem kötelező a `return` (ha nincs, akkor a visszatérési érték `undefined`)
-
-
 
 Jegyzet: 
 Bár a JavaScript nem sziorúan funkcionális nyelv, a függvények mégis különleges fontossággal bírnak. 
@@ -464,7 +467,7 @@ Amennyiben a fentire csak azért lenne szükség, hogy tényleges lokális vált
 ```
 
 ---
-### Lambda kifejezések
+### Lambda kifejezés (arrow function)
 * Függvény kifejezések írásának egy rövidebb módja
 * `function` elmarad
 * a paraméterek után `=>`
@@ -510,7 +513,7 @@ console.log(typeof function (){}); //function
 
 * Minden nem "primitív típusú" adat
 * Kulcs-érték párok
-  * kulcs: property neve
+  * kulcs: property neve (~ string)
   * érték: property értéke (tetszőleges adattípus)
 * Új objektum létrehozása:
   * `new Object()`
@@ -687,7 +690,7 @@ Vigyázat, ha egy konstruktor függvényen belül visszaadunk egy objektumot, az
 
 * Primitív típusú értékek is rendelkeznek metódusokkal és property-kkel
 * Primitív típuson nem tudunk változtatni (új property-t hozzáadni)
-* A használat során cosmagoló objektumok jönnek létre
+* A használat során csomagoló objektumok jönnek létre
 
 ```js
 let a = "alma";
@@ -872,6 +875,35 @@ setTimeout(() => {
 * https://javascript.info/
 * https://www.w3schools.com/js/
 
+---
+## Ellenőrző kérdések
 
+Jegyzet:
+* Mit jelent, hogy a JavaScript egy szkript nyelv?
+* Hogyan tudunk egy HTML oldalon JavaScript nyelvű kódot futtatni?
+* Mit tudunk megvalósítani egy HTML oldalon a JavaScript kódban?
+* Mi az a NodeJS?
+* Mit jelent az, hogy  *transpiler*?
+* Mit jelent, hogy a JavaScript gyengén típusos nyelv?
+* Mi egy JavaScript változó típusa?
+* Milyen adattípusok vannak a JavaScript nyelvben?
+* Mi a különbség a `==` és a `===` operátorok között?
+* Van-e JavaScriptben függvény overloading?
+* Mi az a lambda-kifejezés
+* Mi az a függvénykifejezés?
+* Mire való a `typeof` operátor?
+* Mire való az `alert` függvény?
+* Mire való az `confirm` függvény?
+* Mit jelent az, hogy egy JavaScript objektum kulcs érték párok halmaza?
+* Hogyan tudunk egy JavaScript objektum egy property-jére hivatkozni?
+* Mire való az `in` operátor?
+* Mit nevezünk konstruktor függvénynek?
+* Mit nevezünk egy primitív adat csomagoló objektumának? Miért van erre szükség?
+* Mi az a `getter` és `setter`?
+* Mire való az `Error` típus?
+* Hogyan tudunk tömböt definiálni? 
+* Mi az a JSON? Milyen szabályok szerint épül fel egy JSON fájl?
+* Milyen függvényekkel tudjuk JavaScriptben JSON formátumot kezelni?
+* Mik azok az időzítők? Hogyan működnek a `setTimeout` és `setInterval` függvények?
 
 

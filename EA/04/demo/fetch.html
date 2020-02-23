@@ -1,0 +1,27 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <script>
+        function queryBooks() {
+            fetch('books.json')
+                .then(response => response.json())
+                .then(books => {
+                    let ul = document.getElementById('ulBooks');
+                    for (let book of books) {
+                        let li = document.createElement("li");
+                        li.innerText = `${book.title} (${book.isbn})`;
+                        ul.append(li);
+                    }
+                });
+        }
+    </script>
+    <button onclick="queryBooks()">Könyvek lekérdezése</button>
+    <ul id="ulBooks">
+
+    </ul>
+</body>
+
+</html>

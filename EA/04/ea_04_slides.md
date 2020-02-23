@@ -24,6 +24,8 @@ JavaScript folytatás
 ---
 
 ## Prototípusok
+----
+
 ### Ismétlés
 * Gyengén típusos nyelv
 * Már ismert, beépített metódusok, propertyk
@@ -32,7 +34,7 @@ JavaScript folytatás
 * Minden adat rendelkezik `toString` metódussal? 
 
 ---
-### Prototípus alapú öröklés:
+### Prototípus alapú öröklés
 * Egy objektumnak lehet legfeljebb 1 prototípusa: 
     *  A prototípus egy másik `objektum`, vagy null, ha nem létezik.
 * Ha egy objektum egy property-jét olvasni akarjuk, de az nem létezik, akkor megnézzük, hogy az benne van-e a prototípusban és ha igen, akkor azt adjuk vissza. 
@@ -464,11 +466,343 @@ Sok esemény ún. "bubbling" típusú:
 
 ---
 ### Storage API
+Storage:
+* Kkisméretű adatok tárolására alkalmas (néhány MB)
+* Tárolás kulcs érték párok formájában, ahol a kulcs és az érték is string
+* Egységes programozói felület (API)
+
+----
+Storage típusok
+* `sessionStorage`: 
+    * böngészőtabonként (pontosabban *domain*enként) elkülönített tárolóhely
+    * a böngésző bezárásakor törlődik
+* `localStorage`: 
+    * A böngésző újraindításakor is megmarad
+
+Ezek elérhetők globális változóként, vagy a `window` objektumon.
+
+----
+* `setItem(<kulcs>, <érték>)`: új érték beírása (vagy felülírása)
+* `getItem(<kulcs>)`: érték lekérdezése
+* `clear()`: minden elem törlése
+
+----
+```js
+function saveUserData(data) {
+    let dataStr = JSON.stringify(data);
+    localStorage.setItem('userData', dataStr);
+}
+
+function loadUserData() {
+    let dataStr = localStorage.getItem('userData');
+    return JSON.parse(dataStr);
+}
+let data = { name: "XY" }; 
+saveUserData(data);
+let data2 = loadData();
+```
+
+----
+&#10026;
+
+#### Storage Event
+Értesítések a storage változásáról:
+* `window` objektumon
+* Eseménye neve: `storage`
+
+```js
+window.addEventListener('storage', () => {
+  console.log(
+      JSON.parse(
+        window.localStorage.getItem('sample')));    
+});
+```
 
 ---
-### AJAX (`fetch` APi)
+## Aszinkronitás
+* A JavaScript motor eredetileg egyszálú
+    * `Web worker`: munkaigényes feladatok elvégzése a háttérben külön szálon
+* Szinkron vs aszinkron kód:
+    * szinkron kód blokkolja a végrehajtást, amíg véget nem ér
+    * aszinkron kód másik szálon fut, így az erdeti szálat nem blokkolja
+        * aszinkron függvényhívás visszatérési értéke: esemény jelzi, hogy véget ért a végrehajtás és az esemény tartalmazza a visszatérési értéket
+        * Ha értesülni akarunk az eredményről, fel kell iratkozni az eseményre egy **callback** függvénnyel
+
+----
+```js
+function add(a, b) { 
+    console.log('add');
+    return a + b; 
+}
+function addAsync(a, b, callback) {
+    console.log('addAsync');
+    setTimeout(() => {
+        let sum = a + b;
+        callback(sum);
+    }, 1000)
+}
+```
+
+----
+```js
+console.log('1');
+add(1,2);
+console.log('2');
+addAsync(1,2, sum => {
+    console.log('addAsync végetért');
+});
+console.log('3');
+```
+
+```console
+1       
+add     
+2       
+addAsync
+3       
+addAsync végetért
+```
+
+----
+#### A `setTimeout` és a `setInterval` aszinkron módon futtatja a kódot, még akkor is, ha 0 ezredpásorperc van beállítva időintervallumnak.
+
+---
+### Promise minta
+
+Függvény általánosítása:
+* Adott egy művelet, amely valamilyen eredményt állít elő. (*producer*)
+* Meg szeretnénk hívni a műveletet és az eredményét fel akarjuk dolgozni. (*consumer*)
+* A műveletet aszinkron módon hajtjuk végre, ezért
+    * szeretnénk értesülni arról, ha a művelet végetért és rendelkezésre áll az eredmény.
+* A függvényünk visszaétéri értéke egy **promise**:
+    * Egy JS objektum, amely nem az eredményt tartalmazza, hanem 
+    * Egy API-t, amin feliratkozhatok arra az eseményre, hogy az eredmény elkészült
+----
+Miben több ez, mint a korábbi callback megoldás?
+* callback: ahány aszinkron függvény, annyiféle API a feliratkozásra
+    * promise: egységes API
+* Hibakezelés: mi történik, ha hiba lesz az aszinkron művelet végrehajtása során?
+    * Hiába tesszük `try...catch` blokba az aszinkron függvény meghívását...
+    * Megoldás: legyen egy másik callback, amit hiba esetén meghívunk
+    * promise: erre is egységes API-t biztosít
+
+----
+```js
+function addAsyncWithError(a, b, callback) {
+    setTimeout(() => {
+        throw new Error();
+        callback(a + b);
+    }, 1000);
+}
+try {
+    addAsyncWithError(1, 2, sum => { console.log(sum); });
+} catch (error) {
+    console.log(error);
+}
+console.log('vége');
+```
+----
+```console
+vége
+Error
+    at Timeout._onTimeout (temp.js:3:15)
+    at listOnTimeout (internal/timers.js:549:17)
+    at processTimers (internal/timers.js:492:7)
+```
+----
+```js
+function addAsync(a, b, callback, callbackOnError) {
+    setTimeout(() => {
+        try {
+            throw new Error();
+            callback(a + b);
+        } catch (error) { callbackOnError(error); }
+    }, 1000);
+}
+addAsync(1, 2, 
+    sum => console.log(sum),
+    error => console.log('hiba történt'));
+        
+console.log('vége');
+```
+```console
+vége
+hiba történt
+```
+----
+Milyen API-t biztosít egy promise (`Promise` típusú JS objektum) a feliratkozásokra?
+* `then(<callbackOnSuccess>, [<callbackOnError>])`:
+    * *callbackOnSuccess*: egy függvény, amely egy paramétert vár, ez lesz az eredmény
+    * *callbackOnError*: egy függvén, amely egy paramétert vár, ez lesz a hiba
+* `catch(<callbackOnError>)`: csak a hibára iratkozunk fel
+* `finally(<callbackAlways>)`: egy függvényt vár, ami mindig megíhvódik, akkor is, ha megvan az eredmény, akkor is, ha hiba történik
+
+---
+### Állapotgép
+Egy `Promise` állapotát leírja a `result` és a `state` property:
+* Amíg az aszinkron művelet végrehajtás alatt van és még nincs eredménye:
+    * `state`: `pending`
+    * `result`: `undefined`
+* Ha sikeresen végetért a művelet:
+    * `state`: `fulfilled`
+    * `result`: az aktuális eredmény
+* Ha hiba történt:
+    * `state`: `rejected`
+    * `result`: `error`
+
+----
+`fulfilled` &xlarr; `pending` &xrarr; `rejected`
+* Nincs visszatérés a kezdő állapotba
+
+----
+#### Időzítés
+* Egy `Promise`-ra akkor is fel lehet iratkozni, ha már `fulfilled` állapotban van:
+
+```js
+let promise = new Promise((resolve, reject) => {
+    resolve(1);
+});
+
+setTimeout(() => {
+    promise.then(result => console.log(result));
+}, 1000);
+```
+```console
+1
+```
+
+---
+###  Érdekességek
+* Egy `Promise`-ra többször is fel lehet iratkozni
+
+```js
+promise.then(...);
+promise.then(...);
+```
+
+----
+####  `Promise` chaining
+* A `then` visszaétérési értéke is egy `Promise`
+* Ha a `then`-ben átadott függvénynek van egy visszatérési értéke, a lesz az új Promise visszatérési értéke
+
+```js
+
+promise
+    .then(result => 2)
+    .then(result => 3)
+    .then(result => 4)
+    .then(result => console.log(result));
+```js
+
+```console
+4
+```
+
+---
+### Promise pattern és aszinkron műveletek
+Egy művelet aszinkronná tehető, ha visszatérési értéke egy `Promise` objektum. 
+
+---
+### Promise létrehozása
+* Sok beépített függvénynek `Promise` a visszatérési érétke
+* Létrehozhatunk sajátot is: 
+    * `new Promise(action)`
+    * Az `action` egy függvény:
+        * Két paramétere van: `resolve` és `reject`, amelyek függvények
+        * Az action végrehajtja a számítást és az eredménytől függően az egyik függvényt kell meghívja. 
+            * Tehát `return <value>` helyett `resolve(value)`-t hív, illetve
+            * `throw Error()` helyett `reject(...)`-et hív
+----
+```js
+function divideAsync(a, b) {
+    return  new Promise((resolve, reject) => {
+        if (b === 0)
+            reject('0-val nem lehet osztani');
+        else 
+            resolve(a / b);
+    });
+}
+divideAsync(1,2)
+    .then(result => console.log(result));
+divideAsync(1,0)
+    .catch(result => console.log(result));
+```
+```console
+0.5
+0-val nem lehet osztani
+```
+
+---
+## `fetch` API
+AJAX küldése JavaScriptből:
+* `XMLHttpRequest`: régi API, bonyolult a használata
+* Helyette kialakult sok utility könyvtár: pl. `jQuery.ajax()`
+* `fetch` API
+
+----
+![](fetch-browser-support.png)
+
+----
+`fetch(resource, [init])`:
+* `resource`: URL 
+* `init`: 
+    * `method`
+    * `headers`
+    * `body`
+* Aszinkron művelet, ami egy *promise*-szal tér vissza
+    * A promise eredménye egy *response stream*
+    * Segédfüggényekkel kiolvasható a streamből a tartalom
+        * `json()`: egy JS objektum promise-szal tér vissza
+        * `blob()`
+        * `text()`
+
+----
+[Példa](demo/fetch.html)
+
+---
+## `jQuery`
+* Korábbi JS verziókban sok feladatot nagyon nehézkes volt megcsinálni:
+    * DOM módosítás bizonyos feladatai
+        * Elemek stílusának módosítása
+    * Eseménykezelés
+    * AJAX hívás
+* `jQuery`: első nagy JS könyvtár, amely rengeteg segédfüggvényt biztosított
+
+Jegyzet: 
+A `jQuery` nagy mértékben egyszerűsítette a HTML DOM manipulációt és lehetővé tette, hogy  komplexebb kódot le tudjunk írni sokkal rövidebben. Ez szintlépést tett lehetővé a webes alkalmazások írásában. 
+
+---
+## Ellenőrző kérdések
+
+
+Jegyzet:
+* Mit nevezünk egy objektum prototípusának?
+* Mit jelent a prototípus alapú öröklés?
+* Mire szolgál a konstruktor függvények `prototype` propertyje?
+* Valójában mit takar `class` kulcsszó JS-ben?
+* Mit jelent a `public` kulcsszó a következő kódrészletben? `class User { constuctor(public name ) { } }`
+* Mi az a `window`?
+* Mi az a `document`?
+* Ismertesse a következő függvények feladatát: `getElementById`, `querySelectorAll`?
+* Hogyan működik az eseménykezelés JavaScriptben?
+* Milyen módokon lehet feliratkozni DOM eseményekre? 
+* Hogyan működik az eseménykezelő függvény? 
+* Mit nevezünk *bubblingnak*, mire szolgál a `stopPropagation` függvény?
+* Ismertesse a `localStorage` és a `sessioStorage` szerepét!
+* Ismertesse a `Storage API`-t!
+* Mi a különbség a szinkron és az aszinkron műveletvégrehajtás között?
+* Ismertesse a **promise mintát**!
+* Mire valók a `then`, `catch`, `finally` függvények, mik a paramétereik? 
+* Milyen állapotai vannak egy promise-nak?
+* Hogyan kell létrehozni egy promise-t?
+* Mire való a fetch API?
+* Írjon egy egyszerű kódo, amely fetch API-val lekérdez egy JSON adatot a `data.json` URL-ről és kiírja az eredményt a konzolra!
+* Mi az a jQuery?
+
+
 
 
 
 
  
+
