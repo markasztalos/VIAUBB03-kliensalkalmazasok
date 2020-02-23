@@ -352,7 +352,7 @@ Említésre méltók az alábbiak:
 
 ## A CSS alapok gyakorlása egy komplexebb feladatban
 
-Töltsük le a mellékelt <a href="index-2.zip" target=_blank>index-2.zip</a> fájlt, a tartalmát csomagoljuk ki a munkakönyvtárunkba és vizsgáljuk meg, mit látunk! Indítsuk el a Live Servert az index-2.html-en!
+Töltsük le a mellékelt <a href="index-2.html" target=_blank>index-2.html</a> és <a href="index-2.css" target=_blank>index-2.css</a> fájlokat és vizsgáljuk meg, mit látunk! Indítsuk el a Live Servert az index-2.html-en!
 
 Figyeljük meg, hogy négy különbőző CSS állományt töltünk be, egy kivételével CDN-ről:
 1. Az első magát a Bootstrap-et tölti be
