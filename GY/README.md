@@ -10,9 +10,9 @@ Minden gyakorlat beugróval kezdődik. A gyakorlat sikeres teljesítéséhez a b
 
 ## [Labor 02 - HTML, CSS](02)
 
-## [Labor 03 - HTML DOM, JavaScript, AJAX](03)
+## [Labor 03 - HTML DOM, JavaScript](03)
 
-## [Labor 04 - TypeScript](04)
+## [Labor 04 - TypeScript, AJAX](04)
 
 ## [Labor 05 - Angular bevezető](05)
 
