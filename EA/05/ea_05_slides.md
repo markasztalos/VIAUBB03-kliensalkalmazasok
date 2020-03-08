@@ -35,6 +35,8 @@ TypeScript
         * Gyorsan bővítik
     * Olyan nyelvi elemek vannak benne, amelyek remélhetőleg előbb utóbb a JavaScriptbe is bekerülnek
 
+Jegyzet: 
+Transpiler az a fordító, amely forráskódból forráskódot fordít. Tehát feladata, hogy két programozási nyelv közötti átjárást segítse. 
 
 ----
 ### Mit ad a JS-hez?
@@ -44,6 +46,8 @@ TypeScript
 * generikus típusok
 * fordításidejű típusellenőrzés
 * osztályok, interfészek
+
+Jegyzet: A JavaScript nyelv sokat fejlődött az elmúlt években. Először csak az újabb szabványok jelentek meg, majd szépen lassan , ezek megvalósítása is belekerült a böngészőkben. A TypeScript azonban sokkal gyorsabban tud fejlődni, így sok nyelvi elem előbb volt meg benne, mint JavaScript-ben. 
 
 ----
 Példák:
@@ -103,6 +107,21 @@ let x : number = 5;
 ```ts
 let x : string = 'alma';
 ```
+
+Jegyzet:
+* Mivel a TypeScript a JavaScriptet egészíti ki, így értelemszerűen ugyanazok a típusok szerepelnek benne. Csak TypeScriptben vannak a típusknak megfelelő kulcsszavak, amelyeket elhelyezhetünk a típusannotációkban. 
+* A típusannotációk tipikusan úgy néznek ki, hogy ha egy névhez típust szeretnénk rendelni, akkor a név után kettősponttal elválasztva megadjuk a típust. 
+
+----
+A típus nem változtatható: 
+
+```ts
+let a : string = "alma";
+a = 5;
+```
+
+JavaScriptben működne, de a TypeScript nem hagyja. 
+
 ----
 
 * Tömbök: 
@@ -130,9 +149,10 @@ enum Color { Red, Green, Blue }
 let a : Color = Color.Red;
 ```
 ----
-
-* `any`: tetszőleges objektum, ugyanaz, mintha nem adunk meg típusannotációt
-* `void`: visszartérési érték nélküli függvény
+* Speciális típusok: 
+    * `any`: tetszőleges objektum
+        * ugyanaz, mintha nem adunk meg típusannotációt
+    * `void`: visszartérési érték nélküli függvény
 * Függvény típusok: lambda kifejezés szerűen
 
 ```ts
@@ -154,6 +174,26 @@ let thisHasName = {
 };
 ```
 
+Jegyzet: 
+Egy név definiálásakor megadhatjuk a típusannotációt. Innentől kezdve a fordító az adott típusként kezeli a nevet és minden értékadásnál, property lekérdezésnél összeveti a típust az adott művelettel. 
+
+Ha nincsen típusannotáció, de van kezdő értékadás, akkor a kezdő érték alapján meghatározza az adott név típusát és utána már így fogja kezelni. 
+
+Ha nincs típusannotáció és nincs kezdőértékadás, akkor `any` lesz a típusa.
+
+Tehát ez a kód hibát okoz: 
+```ts
+let a = 5; //number lesz a típusa
+a = "alma"; //number-höz nem lehet
+```
+De ez a kód nem!!!
+```ts
+
+let a; //any lesz a típusa
+a = 5;
+a = "alma";
+```
+
 ---
 ## Típushibák
 
@@ -173,16 +213,19 @@ EA/05/demo/code1.ts:5:6 - error TS2339: Property
 5 user.salary = "alma";
        ~~~~~~
 ```
+Jegyzet:
+A fordítás során kapun khibaüzenetet. 
+
 ----
 ### Tool support
 
-VS Code, Visual Studio stb.
+[VS Code](https://code.visualstudio.com/), Visual Studio, [WebStorm](https://www.jetbrains.com/webstorm/) stb.
 
 ![](tsInVSCode.png)
 
 
 ----
-A háttérben továbbra is JS van!
+A háttérben továbbra is JS van, indexelt property-k esetén nincs típusellenőrzés.
 
 ```ts
 let user = {
@@ -192,13 +235,10 @@ let user = {
 user["salary"] = "alma"; //működik
 ```
 
-Jegyzet: 
-A fenti kód lefut helyesen, az indexelt property-k esetén nincsen típusellenőrzés. 
-
 ---
 
 ## type assertation
-* Azt mondjuk a fordítónak, hogy egy valamit egy adott típusként kezeljen
+* Azt mondjuk a fordítónak, hogy egy nevet egy adott típusként kezeljen!
 * Két féle szintaxis: 
     * `<típus>kifejezés`
     * `kifejezés as típus`
@@ -264,8 +304,9 @@ interface User {
     salary? : number
 };
 let u1 : User = { name: "X", salary: 1 }; //ok
-let u1 : User = { name: "Y" }; //ok
-let u1 : User = { salary: 1 }; //hiba
+let u2 : User = { name: "Y" }; //ok, mert a salary opcionális
+u2.salary = 5; //ok, mert u2 egy User
+let u3 : User = { salary: 1 }; //hiba, mert nincs benne name
 ```
 
 ----
@@ -394,10 +435,30 @@ var user = new User("Mari");
 
 ## Függvények
 
+* Visszatérési típus `=>` után 
+    * nincs visszatérési érték: `void`
+   
 ```ts
 let myAdd: (x: number, y: number) => number = //típudefiníció
     function(x: number, y: number): number { return x + y; };
 ```
+
+* ha nem adunk meg visszatérési típust, akkor megpróbálja kikövetkeztetni a fordító
+```ts
+function add(a : number, b: number) { return a + b;}
+let x = add(1,2); //tudja, hogy x egy szám
+```
+----
+* paraméterszámokat ellenőrizzük
+
+```ts
+function add(a, b) { return a + b;}
+add(1, 2);
+add(1); //hiba
+add(1,2, 3); //hiba
+```
+----
+
 
 * opcionális (`?`) és default paraméterek (`=`)
 
@@ -419,7 +480,10 @@ g(6);
 ---
 
 ## Generikus típusparaméterek
-* függvényeken és osztályokon
+* Segítenek a hasonló típusok egységes kezelésében
+* Olyan komponensek, amelyek nem csak egyféle típuson, hanem többön is tudnak doglozni
+* Függvényeken, interfészeken és osztályokon
+
 
 ```ts
 function addToArray<TItem>(array: T[], item: T) {
@@ -432,6 +496,9 @@ addToArray(a, 5);
 ```
 
 * több típusparaméter is lehet: `<T1, T2, T3, ...>`
+
+Jegyzet: 
+A típusparamétereket `<`...`>` között adjuk meg a név után. Bármilyen nevet használhatunk. 
 
 ----
 ```ts
@@ -481,14 +548,20 @@ printUserName({ name: "User", salary: 5});
 * intersection (metszet): csak a közös property-k lesznek benne
 
 ```ts
-let user: Person & Administrator;
+interface Person { name: string, id: number };
+interface Employee { name: string, salary: number };
+// { name: string }
+let user: Person & Employee; 
 ```
 
 * union (unió): vagy-vagy, mindegyik property-jei benne lehetnek
 
 ```ts
-let Person | Administrator;
+// { name: string, id?: number, salary?: number}
+let Person | Employee; 
 let item: string | number;
+item = "alma";
+item = 5;
 ```
 
 ----
@@ -537,15 +610,13 @@ function f(item: any) {
 
 
 ---
-
-## További típusok
-
-*literal* típus: 
+### *literal* típus: 
 
 ```ts
 let item: 'a' | 'b' | 'c' | 3 | 5;
 ```
-
+----
+## `null`
 Lehet-e `null` egy változó értéke (*nullable*)?  
 * `--strictNullChecks` kapcsoló fordításnál
 
@@ -554,11 +625,16 @@ let x : number = null;
 let y : number | null = null;
 ```
 
+Jegyzet: 
+A `null` és `undefined` speciális értékeke JavaScriptben. Ha nem adunk kezdőértéket egy változónak, az `null` lesz. Ezért TypeScriptben is igaz, hogy a `let a: number;` esetében az `a` változó értéke `null` lesz. Viszont ez probléma, mert `null` nem a `number` típus példánya. 
+
+A TypeScript kétféle módban tud működni. Szigorú (`strict`) esetben nem engedjük, hogy a fenti esetben `null` értéket használjuk. 
+
 ---
 ## type alias
 `type` *`TípusNév`* `=` *`típus_kifejezés`*`;`
 
- innentől erre a típusra tudok ezzel a névvel hivatkozn &rarr; nem kell leírni a kifejezést
+Innentől erre a típusra tudok ezzel a névvel hivatkozni &rarr; nem kell leírni a kifejezést.
 
 
 ```ts
