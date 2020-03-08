@@ -762,3 +762,29 @@ class A {
 * Fejlesztőeszközök (Visual Studio, VSCode, WebStorm etc) 
     * kódkiemelés
     * autocomplete
+
+---
+## Ellenőrző kérdések
+* Milyen relációban van a TypeSCript nyelv a JavaScripttel?
+* Ismertesse a TypeScript fordítás folyamatát! 
+* Mit jelent a *transpiler* kifejezés?
+* Hogyan tudunk egy TypeScript nyelven megírt programot futtatni?
+* Mi történik, ha a típushibás TypeScript kódot írunk? (A fordítás, futtatás folymatában hol kapunk hibát?)
+* Milyen funkciókkal támogatják a fejlesztőeszközök a TypeScript fejlesztést? 
+----
+* Mit nevezünk *type assertion*nek, miben különbözik a *cast*olástól?
+* Mi a különbség az `interface` és a `type` között?
+* Mire valók az osztálydefiníciókban az `extends` és az `implements` kulcsszavak?
+* Mit nevezünk generikus típusparaméternek? 
+* Adottak az alábbi definíciók
+
+    ```ts
+    type Person = { name: string, id: number };
+    type User = { name: string, salary: number};
+    ```
+
+    Milyen property-jei vannak a `Person & User`, illetve a `Person | User` típusoknak?
+----
+ * Mire valók a `.d.ts` kiterjesztésű fájlok? 
+ * Mire valók a dekorátorok? 
+ * Mire való a `tsconfig.json` fájl? Mi a forámtuma? Mondjon példát néhány beállításra!
