@@ -548,7 +548,7 @@ let f = b.name; //dió
 ```js
 let a = {
     name: "alma",
-    value: "körte"
+    value: "körte",
     "dió": 5
 };
 ```

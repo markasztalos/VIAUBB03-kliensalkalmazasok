@@ -28,10 +28,10 @@ JavaScript folytatás
 
 ### Ismétlés
 * Gyengén típusos nyelv
-* Már ismert, beépített metódusok, propertyk
+* Beépített metódusok, propertyk
     * `"abc".length`
     * `[1,2,3].push(4)`
-* Minden adat rendelkezik `toString` metódussal? 
+* Minden adat rendelkezik `toString` metódussal...
 
 ---
 ### Prototípus alapú öröklés
@@ -39,6 +39,8 @@ JavaScript folytatás
     *  A prototípus egy másik `objektum`, vagy null, ha nem létezik.
 * Ha egy objektum egy property-jét olvasni akarjuk, de az nem létezik, akkor megnézzük, hogy az benne van-e a prototípusban és ha igen, akkor azt adjuk vissza. 
     * Írni nem tudjuk a prototípus property-jét. 
+
+
 
 ----
 Protítpus objektum elérése és módosítása:
@@ -60,6 +62,45 @@ o.__proto__ = null;
 console.log(o.toString()); 
     // --> TypeError: o.toString is not a function
 ```
+----
+```js
+let parent = {
+    name: 'x',
+    greet() {
+        console.log(this.name);
+    }
+};
+let child = {
+    id: "ABC123"
+};
+
+//Az alábbi ezzel azonos: 
+// Object.setPrototypeOf(child, parent);
+child.__proto__ = parent;
+```
+----
+```js
+console.log(child.id); //ABC123
+console.log(child.name); // x
+child.greet();  // x
+
+child.id = "EFG456";
+console.log(child.id); //EFG456 
+
+console.log('name' in child); //true
+child.name = "y";
+console.log(child.name); // y
+console.log(parent.name); // x
+child.greet(); //y
+parent.greet(); //x
+```
+----
+```js
+child.__proto__ = null;
+console.log(child.name); //y
+console.log(child.greet); //undefined
+```
+
 ----
 A prototípus tehát egyfajta öröklést tesz lehetővé. 
 
@@ -89,7 +130,8 @@ admin.greet(); // "admin"
 ---
 ### Konstruktor függvények
 * Konstuktor függvényeknek van `prototype` propertyje
-* Amikor létrehozunk egy új objektumot, akkor annak a prototípusa ez az objektum lesz.
+    * Nem azonos a `__proto__` property-vel!!!
+* Amikor létrehozunk egy új objektumot a konstruktor függvénnyel, akkor annak a prototípusa ez az objektum lesz.
 * Ez lehetővé teszi, hogy a prototípust akár futási időben újabb property-kkel egészítsük ki, amelyek ezután minden öröklött helyen elérhetővé válnak.
 
 
@@ -246,16 +288,20 @@ A.greet(); // hello
 Az `instanceof` operátorral eldönthető, hogy egy objektum egy adott osztály példánya. 
 
 ```js
-function A() { }
-class B { }
-
+function F() { }
+class A {}
+class B extends A { }
+let f = new F();
 let a = new A();
 let b = new B();
 
-console.log(a instanceof A); // true
-console.log(a instanceof B); // false
-console.log(b instanceof B); // true
-console.log(b instanceof A); // false
+console.log('f instanceof F: ', f instanceof F); //true
+console.log('a instanceof F: ', a instanceof F); //false
+console.log('a instanceof A: ', a instanceof A); //true
+console.log('a instanceof B: ', a instanceof B); //false
+console.log('b instanceof A: ', b instanceof A); //true
+console.log('b instanceof B: ', b instanceof B); //true
+
 ```
 ---
 &#10026;
@@ -319,12 +365,15 @@ Ez jelképezi a böngészőben megjelenített, JavaScript kódból változtathat
 
 ![](dom-structure.svg)
 
-<small>**</small>
-
+Jegyzet: 
+Ez a kép mutatja a DOM struktúráját. A `window` tartalmazza a `document`-et, az tárol `element`eket. Minden `element` további elemeket tartalmaz. 
 ----
 [Típusok a DOMban](https://mdn.mozillademos.org/files/16596/html-dom-hierarchy.svg)
 
 ![](html-dom-hierarchy.svg)
+
+Jegyzet:
+Amikor hozzáférünk a fastruktúra egy eleméhez, akkor az adott HTML elemeknek megfelelő típusú objektumot kapunk, pl. `HTMLAnchorElement` (`a`), vagy `HTMLImageElement` (`img`). Ezek mindegyik az adott HTML attribútumainak megfelelő property-ket biztosít az elem tulajdonságainak módosítására. 
 
 ----
 #### Hogyan tudjuk bejárni a fát?
@@ -467,14 +516,14 @@ Sok esemény ún. "bubbling" típusú:
 ---
 ### Storage API
 Storage:
-* Kkisméretű adatok tárolására alkalmas (néhány MB)
+* Kisméretű adatok tárolására alkalmas (néhány MB)
 * Tárolás kulcs érték párok formájában, ahol a kulcs és az érték is string
 * Egységes programozói felület (API)
 
 ----
 Storage típusok
 * `sessionStorage`: 
-    * böngészőtabonként (pontosabban *domain*enként) elkülönített tárolóhely
+    * böngészőtabonként (valójában *domain*enként) elkülönített tárolóhely
     * a böngésző bezárásakor törlődik
 * `localStorage`: 
     * A böngésző újraindításakor is megmarad
