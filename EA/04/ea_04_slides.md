@@ -747,13 +747,16 @@ promise
 4
 ```
 
+
+
+
 ---
 ### Promise pattern és aszinkron műveletek
 Egy művelet aszinkronná tehető, ha visszatérési értéke egy `Promise` objektum. 
 
 ---
 ### Promise létrehozása
-* Sok beépített függvénynek `Promise` a visszatérési érétke
+* Sok beépített függvénynek `Promise` a visszatérési értéke
 * Létrehozhatunk sajátot is: 
     * `new Promise(action)`
     * Az `action` egy függvény:
@@ -782,6 +785,20 @@ divideAsync(1,0)
 ```
 
 ---
+### `Promise` API
+* `Promise.resolve(value)`: egy `Promise`, ami visszaadja az adott értéket
+* `Promise.all(listOfPromises)`: várakozik az összes paraméterként kapott `Promise`-ra 
+    * Visszatérési értéke egy `Promise`, ami az eredmények listáját tartalmazza
+    * A paraméterben nem csak `Promise`-ok, hanem konstansok is lehetnek
+
+```js
+Promise.resolve(1).then(value => console.log(value)); 
+//1
+Promise.all([1,2,3]).then(values => console.log(values)); 
+//[1,2,3]
+```
+
+---
 ## `fetch` API
 AJAX küldése JavaScriptből:
 * `XMLHttpRequest`: régi API, bonyolult a használata
@@ -807,6 +824,49 @@ AJAX küldése JavaScriptből:
 
 ----
 [Példa](demo/fetch.html)
+
+---
+## Async/await
+
+Speciális nyelvi szintaxis `Promise`-okkal kezeléséhez:
+ * `async`
+ * `await`
+
+----
+### `async`
+*  kulcsszó egy függvény neve előtt: a függvény visszatérési értéke egy `Promise`
+* A függvényben elég egy egyszerű értéket visszadnunk, azt a végrehajtó motor becsomagolja egy `Promise`-ba
+
+```js
+async function f() {
+return 1;
+}
+
+f().then(alert); // 1
+```
+
+* Természetesen visszaadhatunk magunk is `Promise`-t, ilyenkor az nem lesz becsomagolva
+
+----
+### `await`
+* Egy promise elé írhatjuk:
+
+```js
+let result = await promise;
+```
+
+* a kódnak a végrehajtása akkor folytatódik, amikor a promise végeredménye rendelkezésre áll
+* az eredmény lesz a visszatérési érték
+
+* Csak `async`-kal megjelölt függvényben szerepelhet
+
+----
+Async/await vs szinkron végrehajtás:
+* Úgy tűnik, mintha szinkronná tennénk egy `Promise` mögötti függvény végrehajtását, hiszen a hívó kódunk blokkolódik
+* Valójában nem ez történik, hanem:
+    * Elindítjuk az aszinkron műveletet
+    * A környezet elmenti a végrehajtás aktuális állapotot (pl. lokális változók, stb.) és generál egy olyan callback függvényt, amely az `await` utáni kódot tartalmazza
+    * **Tehát nem blokkolja a végrehajtást**
 
 ---
 ## `jQuery`
