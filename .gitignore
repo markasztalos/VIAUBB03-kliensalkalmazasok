@@ -1,2 +1,4 @@
 **/.vs
+temp*/
+node_modules/
 EA/07/libra-server/node_modules/
