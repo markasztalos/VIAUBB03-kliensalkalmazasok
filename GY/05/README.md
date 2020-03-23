@@ -79,6 +79,7 @@ A parancshoz kapcsolódó kapcsolók értelmezéséhez a [dokumentáció](https:
 selectorainak prefixét adjuk meg. Ez alapértelmezetten az `app` értéket veszi fel, tehát a KutyaComponent pl. az `app-kutya` selectorral lenne elérhető, ehelyett ezt a paraméter megadásával `mm-kutya`-ként fogjuk tudni elérni.
 
 > Ha a parancs nem fut le, mert nem találja az `ng` parancsot, ellenőzizzük, hogy a rendszer PATH környezeti változójában megtalálható-e az alábbi sor, és ha nem, **vegyük fel, majd indítsuk újra a VS Code-ot**, hogy beolvassa az új környezeti változókat: `%APPDATA%/npm`!
+>
 > ![Környezeti változók](env_vars.png)
 > ![A PATH környezeti változó](env_vars_path.png)
 
