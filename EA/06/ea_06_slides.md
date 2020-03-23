@@ -18,18 +18,10 @@ title: 6. előadás
 
 Kliensalkalmazások
 
-# 6. Előadás
-
-## Angular
+# Angular
 
 ---
 
-# JavaScript motorok
-* Chrome V8 engine
-* SpiderMonkey (Firefox)
-* IE, Safari stb.
-
-----
 # [`npm`](https://www.youtube.com/watch?time_continue=161&v=x03fjb2VlGY&feature=emb_title)
 
 Mi történik, ha a kódunkban szeretnénk más könyvtárakra is hivatkozni?
@@ -181,12 +173,9 @@ Jegyzet:
 
 
 ```console
-$ ng new libra -d
-$ ng new libra --minimal 
-    --skip-install --skip-tests --skip-git --prefix libra
+$ ng new libra --minimal --prefix libra 
+  --skip-git --skip-install --style css --routing false
 ```
-* *no routing*
-* [scss](https://sass-lang.com/)
 
 ```console
 $ cd libra
@@ -262,6 +251,8 @@ const books : IBook[] = [
 ];
 
 ----
+
+```ts
 @Injectable()
 export class LibraApiService {
   constructor() { }
@@ -302,12 +293,9 @@ $ ng g c books --flat --skip-tests -m app
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.scss']
 })
-export class BooksComponent implements OnInit {
-  constructor(private apiSvc: LibraApiService) { }
-  ngOnInit() {
-      setTimeout(() => {
-        this.books = this.apiSvc.getBooks();
-      });
+export class BooksComponent {
+  constructor(private apiSvc: LibraApiService) {
+    this.books = this.apiSvc.getBooks();
   }
   books: IBook[]
 }
@@ -343,6 +331,24 @@ export class BooksComponent implements OnInit {
   * Mit néz? 
   * Mikor fut le? 
 
+----
+* Komponensnek van egy állapota, ez alapján a HTML template legenerálható.
+* Ha frissül a komponens &rarr; újrageneráljuk a HTML-t
+  * Az új HTML-t a keretrendszer lecseréli a DOM-ban a régire
+  * Sok optimalizálás, hogy ez minél hatékonyabban tudjon megtörténni
+    * pl. csak a változásakat rendereli, nem mindent újraír
+
+----
+Honnan tudja az angular, hogy változott a komponens?
+* @Input() változott
+* Felhasználói esemény történt
+* Aszinkron művelet történt (pl. AJAX hívás, `setTimeout` stb.)
+* Manuálisan meghívjuk a `ChangeDetectorRef` `detectChanges` metódusát
+
+&#10026;
+Hogyan értesül erről az Angular? 
+* [`zoneJS`](https://github.com/angular/zone.js/)
+
 ---
 ## Lifecycle event hooks
 
@@ -350,6 +356,8 @@ export class BooksComponent implements OnInit {
 * `ngOnInit`
 * `ngAfterViewInit`
 * `ngOnDestroy`
+
+Mindegyiknek saját interfésze van...
 
 ---
 ## Komponensek összefoglaló
@@ -406,8 +414,15 @@ export class BookComponent implements OnInit {
 
 ```html
 <!-- book.component.html --> 
+{{book?.title}} (ISBN: {{book?.isbn}}) - {{book?.author}} 
+```
+
+
+
+```html
+<!-- book.component.html --> 
 <ng-container *ngIf="book">
-  {{book.title}} (ISBN: {{book.isbn}}) - {{book?.author}} 
+  {{book.title}} (ISBN: {{book.isbn}}) - {{book.author}} 
 </ng-container>
 ```
 

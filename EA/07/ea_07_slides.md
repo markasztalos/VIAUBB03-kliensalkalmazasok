@@ -21,9 +21,7 @@ title: 7. előadás
 
 Kliensalkalmazások
 
-# 7. Előadás
-
-## Haladó angular
+# Haladó angular
 
 ---
 
@@ -35,7 +33,7 @@ Kliensalkalmazások
 ### `{{ kifejezés }}` 
 
 ```ts
-export class Component {
+export class MyComponent {
     title: string;
     value: number;
     complex: {
@@ -82,7 +80,7 @@ Hivatkozás más komponensre:
 ### Iteráció: `*ngFor`
 
 ```ts
-export class Component {
+export class MyComponent {
     items : {name: string, value: number}[];
 }
 ```
@@ -100,7 +98,7 @@ export class Component {
 
 ----
 ```ts
-class Component {
+class CounterComponent {
     counter : number = 0;
     onClickMe() {
         this.counter++;
@@ -120,7 +118,7 @@ class Component {
 ----
 
 ```ts
-class Component {
+class CounterComponent {
     counter : number = 0;
     onClickMe(ev : MouseEvent) {
         console.log(ev.target);
@@ -143,7 +141,7 @@ class Component {
 Okos szűrések: pl. `keyup.enter`
 
 ```ts
-class Component {
+class MyComponent {
     onEnter(boxValue) {
         this.value = boxValue;
     }
@@ -186,7 +184,7 @@ class Component {
 # Property binding
 
 ```ts
-class Component {
+class MyComponent {
     isButtonDisabled: boolean = false;
     toggle() {
         this.isButtonDisabled = !this.isButtonDisabled;
@@ -290,7 +288,7 @@ class CounterComponent {
 ----
 
 ```ts
-class Component {
+class MyComponent {
     counterValue: number;
     onCounterChanged(newValue : number) {
         this.counterValue = newValue;
@@ -344,7 +342,7 @@ class CounterComponent {
 ----
 
 ```ts
-class Component {
+class MyComponent {
     counterValue: number = 5; //kezdő érték
     onCounterChanged(newValue) {
         this.counterValue = newValue;
@@ -370,7 +368,7 @@ class Component {
 
 ---
 
-&#10026;
+
 # Direktíva
 
 Háromféle direktíva van angularban: 
@@ -545,7 +543,7 @@ export class BookComponent implements OnInit {
 Adatkötés `<input>` elemhez: 
 
 ```ts
-class Component {
+class UserComponent {
     userName: string;
 }
 ```
