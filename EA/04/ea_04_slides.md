@@ -569,6 +569,24 @@ window.addEventListener('storage', () => {
 
 ---
 ## Aszinkronitás
+
+----
+```ts
+console.log("szinkron");
+setTimeout(() => { 
+    console.log("hello");        
+}, 1000);
+console.log("aszonkron");
+```
+
+```console
+szinkron
+aszonkron
+hello
+```
+
+----
+
 * A JavaScript motor eredetileg egyszálú
     * `Web worker`: munkaigényes feladatok elvégzése a háttérben külön szálon
 * Szinkron vs aszinkron kód:
@@ -741,7 +759,7 @@ promise
     .then(result => 3)
     .then(result => 4)
     .then(result => console.log(result));
-```js
+```
 
 ```console
 4
@@ -824,6 +842,29 @@ AJAX küldése JavaScriptből:
 
 ----
 [Példa](demo/fetch.html)
+
+<div style="font-size:smaller">
+
+```html
+<script>
+    function queryBooks() {
+        fetch('books.json')
+            .then(response => response.json())
+            .then(books => {
+                let ul = document.getElementById('ulBooks');
+                for (let book of books) {
+                    let li = document.createElement("li");
+                    li.innerText = `${book.title} (${book.isbn})`;
+                    ul.append(li);
+                }
+            });
+    }
+</script>
+<button onclick="queryBooks()">Könyvek lekérdezése</button>
+<ul id="ulBooks"></ul>
+```
+
+</div>
 
 ---
 ## Async/await

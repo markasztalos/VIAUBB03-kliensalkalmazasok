@@ -481,7 +481,7 @@ g(6);
 
 ## Generikus típusparaméterek
 * Segítenek a hasonló típusok egységes kezelésében
-* Olyan komponensek, amelyek nem csak egyféle típuson, hanem többön is tudnak doglozni
+* Olyan komponensek, amelyek nem csak egyféle típuson, hanem többön is tudnak dolgozni
 * Függvényeken, interfészeken és osztályokon
 
 
