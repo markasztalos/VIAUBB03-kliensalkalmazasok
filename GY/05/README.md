@@ -262,7 +262,7 @@ export class PegComponent implements OnInit {
   }
 
   get colorLower() {
-    return (this.color ?? "X")[0].toUpperCase();
+    return this.color ?? "unset"; 
   }
   // ...
 }
