@@ -147,7 +147,9 @@ Ha a tippünk talált (4 fekete jelző), a játék jelzi, hogy nyertünk, és ú
 
 Adjuk hozzá a Bootstrap-et az alkalmazásunkhoz, hogy könnyen stílusozható legyen, és tudjuk hasznosítani a Bootstrap adta komponenseket. A Bootstrapet nem a szokásos módon adjuk a projektünkhöz most, ugyanis az Angular alapú működéshez specifikus integrációs csomag készült [`ng-bootstrap`](https://ng-bootstrap.github.io/#/getting-started) néven. Ez egyedileg lett implementálva a Bootstrap komponenseihez az Angular lehetőségeinek megfelelően, nincs is JQuery-től, Popper.js-től való függőségünk. Futtassuk le a `mastermind` projekt mappájában (ahol a `package.json` található) az alábbi parancsokat:
 > `npm install bootstrap`
+>
 > `npm install @ng-bootstrap/ng-bootstrap`
+>
 > `ng add @angular/localize`
 
 Az `angular.json` fájlban, a `projects\mastermind\architect\build\options` elemben egészítsük ki a styles értéket:
