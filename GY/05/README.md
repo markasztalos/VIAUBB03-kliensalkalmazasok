@@ -236,12 +236,12 @@ A komponensünket tehát úgy példányosítottuk, hogy a komponenshez tartozó 
 
 Vegyük észre továbbá, hogy a komponensünk megvalósítja az ún. OnInit interfészt, ez később az [Angular komponens/direktíva életciklus](https://angular.io/guide/lifecycle-hooks) során lehet még hasznos.
 
-Hozzuk létre a színeket reprezentáló típust az `app\src\models\peg-color.ts` fájlba:
+Hozzuk létre a színeket reprezentáló típust az `src\app\models\peg-color.ts` fájlba:
 ``` TS
 export type PegColor = 'red' | 'purple' | 'blue' | 'green' | 'yellow' | 'orange' | 'black' | 'white' | 'unset';
 ```
 
-A Peg kétféle lehet: code vagy key, ennek is hozzunk létre egy típust az `app\src\models\peg-type.ts` fájlba:
+A Peg kétféle lehet: code vagy key, ennek is hozzunk létre egy típust az `src\app\models\peg-type.ts` fájlba:
 ``` TS
 export type PegType = 'code' | 'key';
 ```
