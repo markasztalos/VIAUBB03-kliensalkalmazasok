@@ -517,6 +517,14 @@ Igazítsuk hozzá a stílusokat:
 ```SCSS
 // ...
 
+.keys-container {
+    width: 72px;
+    display: inline-block;
+}
+
+.current-guess-container {
+    background: #f0f0f0
+}
 .current-guess-container {
     background: #f0f0f0
 }
