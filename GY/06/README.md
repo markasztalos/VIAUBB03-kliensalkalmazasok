@@ -21,7 +21,7 @@ export class Spoiler {
 <details>
 <summary>Ez a dokumentum egyedi stíluslapot is tartalmaz, amit a GitHub biztonsági okokból nem jelenít meg. VS Code-ot használva az egyedi stíluslap is látható lesz.</summary>
 
-VS Code-ban úgy nyiható meg ez a fájl, hogy a File --> Open File... (vagy Ctrl+O), majd be kell adni a GitHub-on található fájl teljes nyers URL-jét (a File Explorer ablakban): https://raw.githubusercontent.com/markasztalos/VIAUBB03-kliensalkalmazasok/master/GY/06/README.md. Ezután a jobb felső sarokban válthatunk a Preview és szöveges nézetek között (a szöveges nézet be is zárható).
+VS Code-ban történő megnyitáshoz érdemes a repository-t clone-ozni és megnyitni a megfelelő `README.MD` fájlt, ezután a jobb felső sarokban lehet váltani az előnézet és a kód nézet között (a kód nézet külön is bezárható). Természetesen figyelni kell, hogy ha változások történnének, akkor újra kell pull-ozni azokat.
 
 GitHubon az alábbi CSS nyers szövegként jelenik meg, VS Code-ban viszont értelmezésre kerül, ezért a nyers szöveg nem látható.
 <style>
