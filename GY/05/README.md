@@ -79,6 +79,7 @@ A parancshoz kapcsolódó kapcsolók értelmezéséhez a [dokumentáció](https:
 selectorainak prefixét adjuk meg. Ez alapértelmezetten az `app` értéket veszi fel, tehát a KutyaComponent pl. az `app-kutya` selectorral lenne elérhető, ehelyett ezt a paraméter megadásával `mm-kutya`-ként fogjuk tudni elérni.
 
 > Ha a parancs nem fut le, mert nem találja az `ng` parancsot, ellenőzizzük, hogy a rendszer PATH környezeti változójában megtalálható-e az alábbi sor, és ha nem, **vegyük fel, majd indítsuk újra a VS Code-ot**, hogy beolvassa az új környezeti változókat: `%APPDATA%/npm`!
+>
 > ![Környezeti változók](env_vars.png)
 > ![A PATH környezeti változó](env_vars_path.png)
 
@@ -146,7 +147,9 @@ Ha a tippünk talált (4 fekete jelző), a játék jelzi, hogy nyertünk, és ú
 
 Adjuk hozzá a Bootstrap-et az alkalmazásunkhoz, hogy könnyen stílusozható legyen, és tudjuk hasznosítani a Bootstrap adta komponenseket. A Bootstrapet nem a szokásos módon adjuk a projektünkhöz most, ugyanis az Angular alapú működéshez specifikus integrációs csomag készült [`ng-bootstrap`](https://ng-bootstrap.github.io/#/getting-started) néven. Ez egyedileg lett implementálva a Bootstrap komponenseihez az Angular lehetőségeinek megfelelően, nincs is JQuery-től, Popper.js-től való függőségünk. Futtassuk le a `mastermind` projekt mappájában (ahol a `package.json` található) az alábbi parancsokat:
 > `npm install bootstrap`
+>
 > `npm install @ng-bootstrap/ng-bootstrap`
+>
 > `ng add @angular/localize`
 
 Az `angular.json` fájlban, a `projects\mastermind\architect\build\options` elemben egészítsük ki a styles értéket:
@@ -233,12 +236,12 @@ A komponensünket tehát úgy példányosítottuk, hogy a komponenshez tartozó 
 
 Vegyük észre továbbá, hogy a komponensünk megvalósítja az ún. OnInit interfészt, ez később az [Angular komponens/direktíva életciklus](https://angular.io/guide/lifecycle-hooks) során lehet még hasznos.
 
-Hozzuk létre a színeket reprezentáló típust az `app\src\models\peg-color.ts` fájlba:
+Hozzuk létre a színeket reprezentáló típust az `src\app\models\peg-color.ts` fájlba:
 ``` TS
 export type PegColor = 'red' | 'purple' | 'blue' | 'green' | 'yellow' | 'orange' | 'black' | 'white' | 'unset';
 ```
 
-A Peg kétféle lehet: code vagy key, ennek is hozzunk létre egy típust az `app\src\models\peg-type.ts` fájlba:
+A Peg kétféle lehet: code vagy key, ennek is hozzunk létre egy típust az `src\app\models\peg-type.ts` fájlba:
 ``` TS
 export type PegType = 'code' | 'key';
 ```
@@ -259,7 +262,7 @@ export class PegComponent implements OnInit {
   }
 
   get colorLower() {
-    return (this.color ?? "X")[0].toUpperCase();
+    return this.color ?? "unset"; 
   }
   // ...
 }
@@ -514,6 +517,14 @@ Igazítsuk hozzá a stílusokat:
 ```SCSS
 // ...
 
+.keys-container {
+    width: 72px;
+    display: inline-block;
+}
+
+.current-guess-container {
+    background: #f0f0f0
+}
 .current-guess-container {
     background: #f0f0f0
 }
