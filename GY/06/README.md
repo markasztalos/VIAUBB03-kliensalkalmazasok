@@ -536,3 +536,5 @@ guess() {
 Ezzel elkészültünk az alkalmazás önállóan játszható verziójával. A következő alkalommal a kliensoldali üzleti logikánkat átemeljük egy szerverre, ami kezelni fogja a játék logikáját.
 
 ![Végállapot](end-result.gif)
+
+Kérlek, a labor végeztével [értékeld ezt a labort az alábbi form kitöltésével](https://forms.office.com/Pages/ResponsePage.aspx?id=q0g1anB1cUKRqFjaAGlwKdeFMnrrGeFFtDtsgpG72jxURjBFWUpDUllMRjJVMU45NVJRUktUOEg0NiQlQCN0PWcu) (a kitöltés csak a tárgy hallgatói számára engedélyezett).
