@@ -47,7 +47,7 @@ details summary:hover {
 ``` JS
 $$('.markdown-body details').map(i => i.setAttribute('open', ''))
 ```
-Illetbe becsukásához:
+Illetve becsukásához:
 ``` JS
 $$('.markdown-body details').map(i => i.removeAttribute('open'))
 ```
