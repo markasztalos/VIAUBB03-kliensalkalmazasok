@@ -45,7 +45,7 @@ details summary:hover {
 
 Írjuk be a Console-ba az alábbi parancsot az összes elem kinyitásához:
 ``` JS
-$$('.markdown-body details').map(i => i.removeAttribute('open'))
+$$('.markdown-body details').map(i => i.setAttribute('open', ''))
 ```
 Illetbe becsukásához:
 ``` JS
