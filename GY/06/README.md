@@ -1,18 +1,3 @@
-<style>
-details {
-  padding-left: 1em;
-  border-left: 1px solid;
-}
-details summary {
-  font-size: 1.2em;
-  cursor: pointer;
-  color: #69f;
-}
-details summary:hover {
-  color: #58a;
-}
-</style>
-
 # Labor 06 - Egyszerű Angular alkalmazás fejlesztése
 
 ## Bevezetés
@@ -30,7 +15,44 @@ export class Spoiler {
   text = "spoiler!";
 }
 ```
-</details>  
+<hr/>
+</details>
+<br/>
+<details>
+<summary>Ez a dokumentum egyedi stíluslapot is tartalmaz, amit a GitHub biztonsági okokból nem jelenít meg. VS Code-ot használva az egyedi stíluslap is látható lesz.</summary>
+
+GitHubon az alábbi CSS nyers szövegként jelenik meg, VS Code-ban viszont értelmezésre kerül, ezért a nyers szöveg nem látható.
+<style>
+details {
+  padding-left: 1em;
+  border-left: 1px solid;
+}
+details summary {
+  font-size: 1.2em;
+  cursor: pointer;
+  color: #69f;
+}
+details summary:hover {
+  color: #58a;
+}
+</style>
+
+<hr/>
+</details>
+<br/>
+<details>
+<summary>Hogyan nyissuk ki/csukjuk be az összes elemet GitHubon?</summary>
+
+Írjuk be a Console-ba az alábbi parancsot az összes elem kinyitásához:
+``` JS
+$$('.markdown-body details').map(i => i.removeAttribute('open'))
+```
+Illetbe becsukásához:
+``` JS
+$$('.markdown-body details').map(i => i.removeAttribute('open'))
+```
+<hr/>
+</details>
 
 Ez a labor az [előző labor](../05) folytatása, a szükséges fejlesztői eszközök megegyeznek, a korábbi végállapotot folytatjuk.
 
@@ -96,6 +118,7 @@ onPegClicked() {
   this.pegClick.emit();
 }
 ```
+<hr/>
 </details>  
 
 A komponensünk tehát tud értesítést küldeni arról, ha valaki őt megnyomta. Az esemény tetszőleges paramétereket átadhat elsütéskor, nekünk erre nincs szükségünk, ezért egy `<void>` típusparaméterű `EventEmitter`t hozunk létre (ez tehát nem küld semmilyen objektumot paraméterül, amikor elsütjük). Az `onPegClicked()` függvény fogja magát a `pegClick` eseményt elsütni, ezt viszont még nem hívjuk meg sehonnan.
@@ -116,6 +139,7 @@ on-click="onPegClicked()"
 ```
 
 Ezt ritkábban használják, de megfelel a HTML szabványnak, ami szerint az attribútumok csak alfanumerikus értékeket tartalmazhatnak (szemben a `(,),[,]` karakterekkel). A `[property]`-nek a megfelelője ugyanígy a `bind-property`.
+<hr/>
 </details>
 
 A normál DOM elemeken elérhető nagyon sok beépített DOM esemény, mint pl. a `click`, ezeket az Angular alapételmezetten rendelkezésünkre bocsátja. A komponenseken (pl. az `mm-peg` elemen) ilyen nem érhető el, ugyanis ezek nem DOM elemekként, hanem komponensekként kezelendők. A komponensek viszont `@Output` dekorátorral ellátott eseménykezelő változókkal rendelkezhetnek, amelyek ezzel megegyező funkciót biztosítanak, ahogyan az alábbiakban is látható lesz.
@@ -138,6 +162,7 @@ addColorToCurrentGuess(color: PegColor) {
 </div>
 ```
 ![Peg Click!](peg-click.png)
+<hr/>
 </details>
 
 Foglaljuk össze, hogy mi történt eddig!
@@ -160,6 +185,7 @@ Nem minden `<mm-peg>` elemre fogunk feliratkoztatni eseménykezelőt. Az `EventE
 ```
 
 Ezután csak azoknak az `<mm-peg>` komponenseknek a `<div>`-jeire fog felkerülni a "mutatós" egérkurzor, amikre van feliratkoztatva eseménykezelő, esetünkben tehát az egyes tippelhető színekre.
+<hr/>
 </details>
 
 Már csak az "üzleti logika" megírása van hátra, tehát a megfelelő színt be kell tenni az első üres helyre.
@@ -192,6 +218,7 @@ addColorToCurrentGuess(color: PegColor) {
 Ez annyiban működik másképpen, hogy ha az `indexOf('unset')` `-1`-gyel tér vissza, akkor a tömb végéről vesszük ki az utolsó elemet és cseréljük le. Ez nekünk így pont meg is felel.
 
 ![Tippelés](guessing.gif)
+<hr/>
 </details>
 
 ## Tipp javítása
@@ -212,6 +239,7 @@ removeColorFromCurrentGuess(index: number) {
 ```
 
 Ez a függvény kiveszi az aktuális tippünkből az adott indexű elemet, a tömb végére pedig beszúr egy `unset` elemet. Így minden elem balra csúszik eggyel, de mivel 4 helyett csak 3 elem marad, ezért egy új üres elemet kell beszúrni a tömb végére.
+<hr/>
 </details>
 
 A függvényt a megfelelő index-szel kell meghívnunk, ehhez használjuk az Angular [NgFor](https://angular.io/api/common/NgForOf) index szintaxisát!
@@ -230,6 +258,7 @@ A függvényt a megfelelő index-szel kell meghívnunk, ehhez használjuk az Ang
 Láthatjuk, hogy az `NgFor` segítségével kivettük az aktuális elem indexét az `i` változóba, amit átadunk a `pegClick` eseménykezelőben a függvényünknek.
 
 ![Tipp eltávolítása](guess-remove.gif)
+<hr/>
 </details>
 
 ## Tipp elküldése
@@ -260,6 +289,7 @@ guess() {
 Láthatjuk, hogy a `disabled` attribútum értéke azzal egyezik meg (*minden adott időpillanatban!*), hogy a `currentGuess` tömb tartalmaz-e `unset` értéket.
 
 ![Tipp gomb](guess-button.gif)
+<hr/>
 </details>
 
 Láthatjuk, hogy a gomb `hover`-re továbbra is a `pointer`-t mutatja. Használhatnánk ismét a `[style]` adatkötést, de fontos, hogy csak azért, mert van egy kalapács a kezünkben, nem szabad mindent szögnek nézni. Ezért egyszerűsítsük le a dolgunkat.
@@ -275,6 +305,7 @@ button:disabled, .btn:disabled {
 ```
 
 Láthatjuk, hogy itt használjuk az `!important` kulcsszót. Ez azért van, mert szeretnénk, ha minden esetben, ha az elemen definiált `style` esetleg másképp definiálná is, az összes HTML5 `<button>` és Bootstrap `.btn` gomb letiltott állapotban letiltott kurzorral rendelkezzen.
+<hr/>
 </details>
 
 A tippünk összeállítását követően el is küldhetjük azt.
@@ -299,6 +330,7 @@ A fenti feltöltési logika a `secretColors` tömböt tölti fel:
   - az értéktől függetlenül (ez a `_` változó, így szokás jelölni a nem használt paramétereket) a `possibleValues` tömbből kiválasztunk egy véletlen elemet,
   - a `Math.random()` egy 0 és 1 közötti értéket ad nekünk vissza, ezt extrapoláljuk 0 és 5 közé, majd a `Math.floor()` segítségével vesszük a véletlen szám egész részét,
   - a kapott véletlen számmal kiindexeljük az egyik színt a `possibleValues` tömbből.
+<hr/>
 </details>
 
 A tipp beküldéséhez kezeljük, amikor a felhasználó megnyomja a tippelésre szánt gombot. Ennek az eseménykezelőjében ki kell számítanunk, hogy melyik tippek voltak jó helyen, és melyikek rossz helyen. Itt figyelnünk kell, hogy azokat az elemeket, amiket már egyszer bármelyik módon lekezeltük, ne kezeljük a másik módon is. Ha megvannak az értékek, akkor:
@@ -356,6 +388,7 @@ guess() {
 ```
 
 Az adatkötés segítségével a felületre automatikusan bekerül a megfelelő tipp, ugyanis az adatkötés automatikusan újrarajzolja az elemeket a felületen.
+<hr/>
 </details>
 
 ## Játék végét jelző modális ablak
@@ -497,6 +530,7 @@ guess() {
 }
 ```
 
+<hr/>
 </details>
 
 Ezzel elkészültünk az alkalmazás önállóan játszható verziójával. A következő alkalommal a kliensoldali üzleti logikánkat átemeljük egy szerverre, ami kezelni fogja a játék logikáját.
