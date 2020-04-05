@@ -249,7 +249,7 @@ const books : IBook[] = [
   {"isbn":"9789630980746","title":"Fekete gyémántok", 
     "author": "Jókai Mór" }
 ];
-
+```
 ----
 
 ```ts
