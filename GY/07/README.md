@@ -1,4 +1,4 @@
-# Labor 07 - Haladó Angular
+# Labor 07 - Angular Haladó
 
 ## Bevezetés
 
