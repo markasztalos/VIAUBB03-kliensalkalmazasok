@@ -426,18 +426,46 @@ export class HighlightDirective {
 <button [appHighlight]="'green'">Highlight me!</button>
 ```
 
-
 ---
-# `HttpClient`
+# Pipe
+Utility függvények, amelyeket a template-ekben adattranszformációra tudunk használni
+* Formátum: ` adat | pipe`
+* Példák: 
 
-* Beépített Angular service
-* `HttpClientModule` importálása szükséges
-* Segédfüggvények HTTP kérések küldésére (pl. `get`)
-* **Observable**-lel tér vissza
-
+```html
+<pre>{{ books | json}}</pre>
+<h1>{{ title | uppercase }}</h1>
+```
+* Sok [beépített pipe](https://angular.io/api?type=pipe) van
+* Paraméterezhetők
+* Tudunk sajátot is írni
 
 ----
-## Observable
+[&#10026;](https://angular.io/guide/pipes#custom-pipes)
+<div style="font-size:.8em">
+
+```ts
+import { Pipe, PipeTransform } from '@angular/core';
+/*
+ * Raise the value exponentially
+ * Takes an exponent argument that defaults to 1.
+ * Usage:
+ *   value | exponentialStrength:exponent
+ * Example:
+ *   {{ 2 | exponentialStrength:10 }}
+ *   formats to: 1024
+*/
+@Pipe({name: 'exponentialStrength'})
+export class ExponentialStrengthPipe implements PipeTransform {
+  transform(value: number, exponent?: number): number {
+    return Math.pow(value, isNaN(exponent) ? 1 : exponent);
+  }
+}
+```
+</div>
+
+---
+# Observable
 
 * Reaktív programozás: aszinkron programozási paradigma (`RxJS`)
 * Observable: típusos stream 
@@ -446,7 +474,7 @@ export class HighlightDirective {
 * Hány eleme lesz? 
 
 ----
-### Használat
+## Használat (feliratkozás)
 
 ```ts
 let a: Observable<number>
@@ -456,17 +484,183 @@ a.subscribe(value => {
 ```
 
 ----
-### Manuális leiratkozás
+### Használat (leiratkozás)
 
 ```ts
 let subscription = a.subscribe(...);
 subscription.unsubscribe();
 ```
 
-*complete* esemény: observable vége &rarr; automatikus leíratkozás
+```ts
+ subscribe(
+  next?: ((value: T) => void), 
+  error?: (error: any) => void, 
+  complete?: () => void) : Subscription
+```
+
+* `next`: jön egy új érték
+* *complete*: observable vége &rarr; automatikus leíratkozás
+* `error`: hiba történt
+
+----
+## Observable vs Promise
+* A `Promise` **egyetlen** jövőbeli érték ígérete
+  * Események, amelyekre feliratkozhatunk: 
+    * Megkérkezik **az** eredmény (ld. `then`)
+    * Hiba történik (ld. `catch`)
+  * 3 féle állapot: `pending`, `fulfilled`, `rejected`
+* Obsrvable: jövőbeli értékek ígérete
+  * Események, amelyekre feliratkozhatunk: 
+    * Megérkezik **egy** érték (`next`) 
+    * Hiba történik (`error`)
+    * Befejeződik (`complete`)
+
+----
+
+
+| | Single | Multiple |
+|---|---|---|
+| szinkron (*pull*) |`Function`|`Iterator`|
+| aszinkron (*push*) |`Promise`|`Observable`|
+  
+----
+### Observable &lrarr; Promise
+
+```ts
+let o : Observable<any>;
+let promise = o.toPromise();
+let firstResult = await promise;
+```
+
+```ts
+import { from } from 'rxjs';
+
+let promise: Promise<any>;
+from(promise).subscribe(value => console.log(value));
+```
+
+---
+# `HttpClient`
+
+* Beépített Angular service
+* `HttpClientModule` importálása szükséges
+* Segédfüggvények HTTP kérések küldésére (pl. `get`)
+* **Observable**-lel tér vissza
 
 ----
 ## Libra API
+
+Tegyük fel, hogy van egy szerverünk (`libra-server` könyvtár): 
+* localhost 3000-es port
+* HTTP végpontokat biztosít könyvek kezeléséhez
+* Könyvek adatainak formátuma:
+  ```ts
+  interface IBook {
+      title : string;
+      isbn : string;
+      author?: string;
+  }
+  ```
+
+----
+### Végpontok
+
+<div style="font-size:smaller; margin-top:1em">
+
+| HTTP | Url | Művelet |
+|---|---|---|
+| `GET` | `/books` | visszaadja a tárolt könyvek listáját |
+| `GET` | `/books/<ISBN>` | visszaad egy adott ISBN számú könyvet |
+| `DELETE` | `/books/<ISBN>` | Töröl egy adott ISBN számú könyvet |
+| `POST `| `/books` | Létrehoz egy új könyvet |
+| `PUT` | `/books/<ISBN>` | Frissíti egy könyv adatait
+
+</div>
+----
+### Példák HTTP kérés-válaszokra
+
+----
+### Összes könyv lekérdezése
+Kérés:
+```http
+GET /books HTTP/1.1
+
+```
+
+Válasz: 
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 237
+
+[ {"isbn":"9786155248214","title":"Egri csillagok","author":"Gárdonyi Géza"},{"isbn":"9789639555054","title":"A kőszívű ember fiai","author":"Jókai Mór"},{"isbn":"9789630980746","title":"Fekete gyémántok","author":"Jókai Mór"}]
+```
+
+----
+(A válasz tartalma szépen formázva)
+
+<div style="font-size: .7em">
+
+```json
+[
+    {
+        "isbn": "9786155248214",
+        "title": "Egri csillagok",
+        "author": "Gárdonyi Géza"
+    },
+    {
+        "isbn": "9789639555054",
+        "title": "A kőszívű ember fiai",
+        "author": "Jókai Mór"
+    },
+    {
+        "isbn": "9789630980746",
+        "title": "Fekete gyémántok",
+        "author": "Jókai Mór"
+    }
+]
+```
+</div>
+----
+Kérés:
+```http
+GET /books/9786155248214 HTTP/1.1
+
+```
+Válasz:
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 76
+
+{
+    "isbn":"9786155248214",
+    "title":"Egri csillagok",
+    "author":"Gárdonyi Géza"
+}
+```
+----
+Kérés:
+```http
+POST /books HTTP/1.1
+Content-Type: application/json
+Content-Length: 70
+
+{
+	"title": "Bprof Kliensalkalmazások jegyzet",
+	"isbn": "11223344"
+}
+```
+Válasz:
+```http
+HTTP/1.1 200 OK
+Content-Length: 0
+```
+----
+## HttpClient felhasználása
+* Készítsünk egy `service`-t, amely HTTP kéréséseket küldd
+* `LibraApiService`
+
 
 ```ts
 import { Injectable } from '@angular/core';
@@ -562,6 +756,71 @@ Alternatíva:
 * `FormsModule`-t importálni kell hozzá
 * Űrlapok készíthetők vele
 
+----
+## Angular Forms működése és előnyei
+* `ngModel` használata után minden `input`hoz létrejön egy mögöttes modell
+* A mögöttes modelltől lekérdezhető, hogy 
+  * Belekattintottak-e
+  * Változott-e az értéke az utolsó validálás után
+  * Valid-e az értéke
+* Ennek függvényében megjeleníthetők validációs hibaüzenetek
+* [További részletek](https://angular.io/guide/forms)
+----
+[&#10026; Példa](https://angular.io/guide/forms)
+
+<img height="500" src="ng-forms-sample.png">
+
+----
+<div style="font-size:.7em">
+
+```html
+<h1>Hero Form</h1>
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control"
+           id="name" required [(ngModel)]="model.name"
+           name="name" #name="ngModel">
+    <div [hidden]="name.valid || name.pristine"
+         class="alert alert-danger">
+         Name is required
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="alterEgo">Alter Ego</label>
+    <input type="text" class="form-control" id="alterEgo"
+           [(ngModel)]="model.alterEgo" name="alterEgo">
+  </div>
+  <!-- ... -->
+</form>
+```
+</div>
+----
+
+
+<div style="font-size:.7em">
+
+```html
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+<!-- ... -->
+  <div class="form-group">
+    <label for="power">Hero Power</label>
+    <select class="form-control" id="power" required
+            [(ngModel)]="model.power" name="power" #power="ngModel">
+      <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+    </select>
+    <div [hidden]="power.valid || power.pristine"
+         class="alert alert-danger">
+         Power is required
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success"
+          [disabled]="!heroForm.form.valid">Submit</button>
+  <button type="button" class="btn btn-default"
+          (click)="newHero(); heroForm.reset()">New Hero</button>
+</form>
+```
+</div>
 ---
 &#10026;
 ## Libra alklamazás kiegészítése törlés és hozzáadás funkciókkal
@@ -670,6 +929,7 @@ export class CreateBookComponent implements OnInit {
   createBook() {
     if (!this.author || !this.isbn || !this.title)  {
       alert('Tölts ki minden adatot');
+      return;
     }
 
     this.libraApi.createBook$({
@@ -701,7 +961,66 @@ export class CreateBookComponent implements OnInit {
 ```
 </div>
 
+---
+# Angular összefoglalás
+* UI keretrendszer, amely az SPA kódjának minden szintjét szabályozza
 
+----
+## Architektúra
+* **Modulok**: az entitások összefogására
+* **Komponensek**: UI elemek megjelenítésére
+  * Saját TS osztály
+  * HTML template nyelv
+  * CSS fájl
+* Direktívák
+* **Szolgáltatások**:   
+  * Automatikus életciklus menedzsment (*Dependency Injection* - DI)
+
+----
+## További szolgáltatások
+* Routing támogatása
+  * Navigáció
+  * Hozzáférés a paraméterekhez
+* Formok kezelésének támogatása 
+----
+## Angular alkalmazás vs HTML DOM
+### Routing nélkül
+1. Adott egy `index.html` fájl
+  * Ebben hivatkozunk egy komponens selectorára (pl. `app-root`)
+  * Hivatkozunk egy `runtime.js` fájlra, amiben benne van az összes TS fájl, amit írtunk. Ezekből generálta az angular fordító (ng). Ezt a `runtime.js`-t hajtja végre a böngésző, tehát végső soron meghívja a `main.ts`-t
+----
+2. `main.ts`
+  ```ts
+  platformBrowserDynamic().bootstrapModule(AppModule);
+  ```
+  * Betölti az Angular keretrendszert és az alapértelmezett modult 
+----
+3. Az Angular keretrendszer megkeresi a HTML DOM-ban a beregisztrált komponensek selectorait (pl. `app-root`) és **megjeleníti** ezeket a komponenseket. 
+  * Pl. látja, hogy van egy `app-root` tag és van egy beregisztrált `AppComponent` komponens
+  * Példányosítja a komponens osztályt &rarr; **komponens objektum**
+  * A komponens HTML template-je alapján előállít egy HTML tartalmat (ebben hivatkozunk a komponens objektum állapotára, pl. tagváltozókra)
+  * A HTML DOM-ba az `app-root` tag belsejébe beszúra az új HTML tartalmat, ami így megjelenik a böngészőben
+----
+4. Komponensek életciklusa
+  * Az egyes komponensek további komponensekre hivaktozhatnak a template-ekben
+  * A template-ekben feliratkozhatunk eseményekre &rarr; ezek a komponens objektum metódusait hívják majd meg
+  * A komponens objektum állapota megváltozhat! (Például események, időzítők hatására.)
+    * Minden változás után a keretrendszer újrarendereli a HTML sablont, így érvényre jutnak a változtatások
+
+----
+## Angular alkalmazás vs HTML DOM
+### Routing használatával
+* `router-outlet` tag, ahelyett, hogy beégetnénk az `app-root`-ot az index.html-be
+* Navigációt megvalósító service (`Router`)
+* Átnavigálhatunk egyik komponensről a másikra, a `router-outlet`-ben (valójában utána) mindig az aktuális elem fog megjelenni
+
+----
+## Sok témáról nem volt szó
+* Reactive Forms (TS-ben programozott `form`ok összerakása)
+* Tesztelés
+* Dinamikus komponens betöltése 
+
+  
 
 
 
