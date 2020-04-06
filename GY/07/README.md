@@ -610,3 +610,9 @@ A MenuComponent-ben megfelelően lekérhetjük a folyamatban levő játékokat a
 - Menü oldal: a felhasználó folyamatban levő játékainak listázása (`/api/games`), kiválasztása és a toplista megjelenítése (`/api/highscores`).
 - Játék indítása: a `\menu` URL-en a játék indításához fel kell tudni konfigurálni a szükséges `GameOptionsDto` objektumot egy űrlap segítségével (vagy kiválasztani egy már futó játékot a listából). Használható validátor is, ugyanis minimum és maximum érték korlátozások vannak az opciókon. A GameOptionsDto elküldése után a visszakapott játék elindított állapotban van, tehát ennek felületét szükséges megjeleníteni a jelenlegi `game.component.ts`-ben. A GameComponent [URL paraméterben várja a játék ID-ját](https://angular.io/guide/router#route-parameters).
 - Tipp beküldése: a tipp beküldése immár aszinkron módon fog történni, tehát a megfelelő tipp elküldésekor a `.subcribe()` operátorral fel kell iratkozni a válaszba, ott pedig a megfelelő logika alapján eldönteni, hogy a játéknak vége lett-e, valamint megjeleníteni a teljes játékteret.
+
+## Zárás
+
+Az elmúlt laboralkalmakon megismertük a webfejlesztés alaptechnológiáit, és egy komplexebb alkalmazásfejlesztési keretrendszer, az Angular felületét kapargattuk.
+
+Ha kitartottál ezidáig, kérlek, töltsd ki a labort értékelő űrlapot az alábbi oldalon: <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=q0g1anB1cUKRqFjaAGlwKdeFMnrrGeFFtDtsgpG72jxUNTFEM01HMjhRV0dCRFlPS1VJN1ZCU0JQSiQlQCN0PWcu" target="_blank">Labor 07 - Angular haladó - értékelés</a>.
