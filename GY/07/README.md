@@ -340,7 +340,7 @@ Angularban lehetőségünk van a template-ben kétféle referencia-változó lé
 Tiltsuk le a küldéshez használt gombot, ha nem megfelelőek az adatok, azaz a required attribútumnak nem megfelelő értékük van! Ehhez használjuk a HTML Form elemen automatikusan létrejövő [NgForm](https://angular.io/api/forms/NgForm) direktívát:
 
 ``` HTML
-<form #loginForm="ngForm" (submit)="submitForm()" class="co l-xl-3 col-lg-4 col-md-6 col-sm-8 m-auto">
+<form #loginForm="ngForm" (submit)="submitForm()" class="col-xl-3 col-lg-4 col-md-6 col-sm-8 m-auto">
 ...
     <button type="submit" class="btn btn-block btn-primary" [disabled]="loginForm.invalid">Submit</button>
 
@@ -359,12 +359,12 @@ Az alkalmazásunk szerverrel fog kommunikálni. A webes fejlesztés során nagyo
 A szerver a http://localhost:5000 címen érhető el, az alább is látható leíró felület a http://localhost:5000/swagger URL-en érhető el indítás után. A szervernek LocalDb példányra van szüksége, konzol alkalmazásként futtatható.
 
 ![Swagger UI](swagger.png)
-
+<br/>
 Ebből most a regisztrációt és belépést fogjuk elkészíteni:
 ![Regisztráció API](swagger-register.png)
-
+<br/>
 ![Belépés API](swagger-login.png)
-
+<br/>
 Hozzunk létre egy új service-t, ami az API-val történő kommunikációt fogja végezni:
 
 > `ng g s api`
