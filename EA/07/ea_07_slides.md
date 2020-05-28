@@ -823,6 +823,7 @@ Alternatíva:
 </div>
 ---
 &#10026;
+
 ## Libra alklamazás kiegészítése törlés és hozzáadás funkciókkal
 
 <div style="font-size:smaller">
@@ -1021,6 +1022,11 @@ export class CreateBookComponent implements OnInit {
 * Dinamikus komponens betöltése 
 
   
+---
+# Ellenőrző kérdések
 
-
-
+* Mit nevezünk `observable`nek?
+* Mi a különbség az `observable` és a `promise` között?
+* Mi az `HTTPClient`?
+* Hogyan tudunk angular keretrendszeren belül `form`okkal dolgozni?
+* Hogyan történik a végső HTML DOM előállítása az angular alkalmazás futtatása során routing használatával illetve anélkül? 

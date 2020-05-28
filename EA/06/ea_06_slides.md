@@ -515,3 +515,50 @@ Routing használata újratöltés nélkül:
   </li>
 </ul>
 ```
+
+---
+# Ellenőrző kérdések
+
+* Mi az az `npm`? Mik az `npm` csomagok?
+  * Mire való a `package.json` fájl?
+  * Mit csinál a következő parancs? `$ npm install lodash --save`
+  * Mi az a `node_modules` mappa?
+* Mit nevezünk *separation of concerns* elvnek?
+* Mi az az `angular-cli` (`ng`)? Mire használjuk a fejlesztés során?
+* Mire való az `angular.json` fájl?
+
+----
+* Mit nevezünk angular modulnak? Mit tartalmaz egy angular modul?
+* Mit nevezünk angular komponensnek?
+  * Mit nevezünk egy komponens szelektorának?
+* Mit nevezünk angular szolgáltatásnak?
+* Hogyan definiálunk egy szolgáltatást?  
+* Hogyan definiálunk egy komponenst?
+* Hogyan működik az angularban a `change detection` (változásértesítés)?
+* Mire való az `@Input()` dekorátor?
+* Mire valók a következő függvények? `ngOnChanges`, `ngOnInit`, `ngafterViewInit`, `ngOnDestroy`
+
+----
+* Hol és mire használjuk az `*ngIf` direktívát?
+* Hol és mire használjuk az `*ngFor` direktívát?
+* Mire használjuk a dupla kapcsoszárójeleket az angular sablonokban? (`{{}}`)
+
+----
+* Mit nevezünk *dependency injection*nek?
+* Hogyan szerzik meg a komponensek a referenciát a függőségeikre?
+* Mit nevezünk *routing*nak?
+* Mire való a `<router-outlet><router-outlet>` tag?
+
+----
+* Hogyan tudunk angular template-ekben felhasználói eseményekre feliratkozni?
+* Mit nevezünk *property binding*nak?
+* Mire való az `@Output()` dekorátor?
+* Mit jelent a következő kódrészlet? `[(counter)]="counterValue"`
+* Mi az a `pipe`? 
+
+
+
+
+
+
+
